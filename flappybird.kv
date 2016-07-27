@@ -1,0 +1,64 @@
+#:kivy 1.8.0
+
+<FlappyBirdGame>:
+    mcnay: mcnay
+    background: background
+    canvas:
+        Color:
+            rgb: 137 / 255.0, 228 / 255.0, 135 / 255.0
+    Background:
+        id: background
+        pos: root.pos
+    Mcnay:
+        id: mcnay
+        center_x: root.center_x
+        center_y: root.center_y
+    Label:
+        font_size: 70
+        center_x: root.center_x
+        top: root.top - 30
+        markup: True
+        text: "[color=ffffff]" + str(root.score) + "[/color]"
+
+<Background>:
+    image_one: image_one
+    image_two: image_two
+    Image:
+        id: image_one
+        source: "images/background.png"
+        pos: 0, 0
+        size: 800, 600
+    Image:
+        id: image_two
+        source: "images/background.png"
+        pos: root.width, 0
+        size: 800, 600
+
+<Obstacle>:
+    width: 30
+    canvas:
+        Color:
+            rgb: 21 / 255.0, 180 / 255.0, 39 / 255.0
+        Rectangle:
+            pos: self.x, self.gap_top + 20
+            size: self.width, self.height - self.gap_top
+        Rectangle:
+            pos: self.x, 112
+            size: self.width, self.gap_top - self.gap_size - 112
+    Image:
+        source: "images/pipe_bottom.png"
+        center_x: root.center_x
+        y: root.gap_top - 20
+    Image:
+        source: "images/pipe_top.png"
+        center_x: root.center_x
+        y: root.gap_top - root.gap_size - 40
+
+<Mcnay>:
+    bird_image: image
+    size: 50, 50
+    Image:
+        id: image
+        source: "images/flappy.png"
+        size: root.size
+        pos: root.pos
