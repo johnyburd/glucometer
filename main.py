@@ -16,19 +16,19 @@ class MenuScreen(GridLayout):
         #self.username = TextInput(multiline=False)
         #self.add_widget(self.username)
 
-        self.btn1 = Button(text='Data', font_size=14)
+        self.btn1 = Button(text='Data', font_size=40)
         self.btn1.bind(on_press=self.callback)
         self.add_widget(self.btn1)
 
-        self.btn2 = Button(text='Settings', font_size=14)
+        self.btn2 = Button(text='Settings', font_size=40)
         self.btn2.bind(on_press=self.callback)
         self.add_widget(self.btn2)
 
-        self.btn3 = Button(text='Extras', font_size=14)
+        self.btn3 = Button(text='Extras', font_size=40)
         self.btn3.bind(on_press=self.flappy)
         self.add_widget(self.btn3)
 
-        self.btn4 = Button(text='Shutdown', font_size=14)
+        self.btn4 = Button(text='Shutdown', font_size=40)
         self.btn4.bind(on_press=self.restart)
         self.add_widget(self.btn4)
         #self.password = TextInput(password=True, multiline=False)
