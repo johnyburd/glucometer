@@ -16,6 +16,11 @@ class MenuScreen(GridLayout):
         #self.username = TextInput(multiline=False)
         #self.add_widget(self.username)
 
+
+        self.btn0 = Button(text='BG Test', font_size=40)
+        self.btn0.bind(on_press=self.callback)
+        self.add_widget(self.btn)
+
         self.btn1 = Button(text='Data', font_size=40)
         self.btn1.bind(on_press=self.callback)
         self.add_widget(self.btn1)
@@ -50,11 +55,11 @@ class MenuScreen(GridLayout):
 
 
 
-class MyApp(App):
+class GlucometerApp(App):
 
     def build(self):
         return MenuScreen()
 
 
 if __name__ == '__main__':
-    MyApp().run()
+    GlucometerApp().run()
