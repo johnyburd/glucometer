@@ -12,7 +12,7 @@ class MenuScreen(GridLayout):
     def __init__(self, **kwargs):
         super(MenuScreen, self).__init__(**kwargs)
         self.cols = 1
-        self.add_widget(Label(text='Main Menu'))
+        self.add_widget(Label(text='Main Menu', font_size=40))
         #self.username = TextInput(multiline=False)
         #self.add_widget(self.username)
 
