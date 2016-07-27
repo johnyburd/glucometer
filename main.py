@@ -19,7 +19,7 @@ class MenuScreen(GridLayout):
 
         self.btn0 = Button(text='BG Test', font_size=40)
         self.btn0.bind(on_press=self.callback)
-        self.add_widget(self.btn)
+        self.add_widget(self.btn0)
 
         self.btn1 = Button(text='Data', font_size=40)
         self.btn1.bind(on_press=self.callback)
