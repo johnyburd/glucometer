@@ -1,0 +1,111 @@
+#: import sm kivy.uix.screenmanager
+
+#slide
+#swap
+#fade
+#wipe
+
+#ScreenManagement:
+#    transition: sm.SlideTransition()
+#    MainScreen:
+#    BGScreen:
+#    DataScreen:
+#    SettingsScreen:
+#    ExtrasScreen:
+
+#<BoxLayout>:
+#    orientation: 'vertical'
+#
+#    canvas.before:
+#        Color:
+#            rgb: .6, .6, .6
+#        Rectangle:
+#            size: self.size
+#            source: 'data/background.png'
+
+
+ScreenManager:
+    id: sm
+
+<MenuBar>:
+    pos_hint: {'top':1}
+    ActionView:
+        use_separator: True
+        ActionPrevious:
+            id: testid
+
+            title: 'this is a title'#app.test()#sm.current_screen.name #app.test_text()
+            on_release: app.root.current = 'main'
+            with_previous: root.set_previous()
+
+        ActionOverflow:
+        ActionButton:
+            text: 'Btn0'
+            icon: 'atlas://data/images/defaulttheme/audio-volume-high'
+        ActionButton:
+            text: 'Btn1'
+        ActionButton:
+            text: 'Btn2'
+        ActionButton:
+            text: 'Btn3'
+        ActionButton:
+            text: 'Btn4'
+        ActionGroup:
+            text: 'Group1'
+            ActionButton:
+                text: 'Btn5'
+            ActionButton:
+                text: 'Btn6'
+            ActionButton:
+                text: 'Btn7'
+    
+<MainScreen>:
+    name: 'main'
+    BoxLayout:
+        orientation: 'vertical'
+
+        MenuBar
+        Button:
+            on_release: app.root.current = 'bgtest'
+            text: 'test'#app.test
+            font_size: 40
+            id: butid
+        TextInput:
+            text: butid.state
+        Button:
+            on_release: app.root.current = 'data'
+            text: 'Data'
+            font_size: 40
+        Button:
+            on_release: app.root.current = 'settings'
+            text: 'Settings'
+            font_size: 40
+        Button:
+            on_release: app.Flappy()#app.root.current = 'extras'
+            text: 'Extas'
+            font_size: 40
+        Button:
+            on_release: app.print_current_screen()
+            
+<BGScreen>:
+    name: 'bgtest'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MenuBar
+        Button:
+            on_release: app.root.current = 'main'
+            text: 'This is where you\'ll test BG'
+            font_size: 50
+<DataScreen>:
+    name: 'data'
+    MenuBar
+<SettingsScreen>:
+    name: 'settings'
+    MenuBar
+<ExtrasScreen>:
+    name: 'extras'
+    MenuBar
+
+

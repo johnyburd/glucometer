@@ -1,65 +1,53 @@
-
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.uix.actionbar import ActionBar
+from kivy.properties import StringProperty
 import FlappyBird
 
+class MainScreen(Screen):
+    pass
 
-class MenuScreen(GridLayout):
+class BGScreen(Screen):
+    pass
 
-    def __init__(self, **kwargs):
-        super(MenuScreen, self).__init__(**kwargs)
-        self.cols = 1
-        self.add_widget(Label(text='Main Menu', font_size=40))
-        #self.username = TextInput(multiline=False)
-        #self.add_widget(self.username)
+class DataScreen(Screen):
+    pass
 
+class SettingsScreen(Screen):
+    pass
 
-        self.btn0 = Button(text='BG Test', font_size=40)
-        self.btn0.bind(on_press=self.callback)
-        self.add_widget(self.btn0)
-
-        self.btn1 = Button(text='Data', font_size=40)
-        self.btn1.bind(on_press=self.callback)
-        self.add_widget(self.btn1)
-
-        self.btn2 = Button(text='Settings', font_size=40)
-        self.btn2.bind(on_press=self.callback)
-        self.add_widget(self.btn2)
-
-        self.btn3 = Button(text='Extras', font_size=40)
-        self.btn3.bind(on_press=self.flappy)
-        self.add_widget(self.btn3)
-
-        self.btn4 = Button(text='Shutdown', font_size=40)
-        self.btn4.bind(on_press=self.restart)
-        self.add_widget(self.btn4)
-        #self.password = TextInput(password=True, multiline=False)
-        #self.add_widget(self.password)
-
-    def callback(self, instance):
-        print('The button <%s> is being pressed' % instance.text)
-
-    def flappy(self, instance):
-        FlappyBird.FlappyBirdApp().run()
-        print("test")
-
-    def restart(self, instance):
-        command = "/usr/bin/sudo /sbin/shutdown now"
-        import subprocess
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        output = process.communicate()[0]
-        print (output)
+class ExtrasScreen(Screen):
+    pass
+class MenuBar(ActionBar):
+    def set_previous(self):
+        if sm.current_screen and sm.current_screen.name == 'main':
+            return True
+        return False
 
 
+kvfile = Builder.load_file("glucometer.kv")
 
-class GlucometerApp(App):
+sm = ScreenManager()
+sm.add_widget(MainScreen(name='main'))
+sm.add_widget(BGScreen(name='bgtest'))
+sm.add_widget(DataScreen(name='data'))
+sm.add_widget(SettingsScreen(name='settings'))
+sm.add_widget(ExtrasScreen(name='extras'))
+
+class Glucometer(App):
+
+    test = StringProperty('test')
 
     def build(self):
-        return MenuScreen()
+        return sm
+
+    def print_current_screen(self):
+        return sm.current_screen.name
+    def test(self):
+        return StringProperty('test')
+    def Flappy(self):
+        FlappyBird.FlappyBirdApp().run()
 
 
-if __name__ == '__main__':
-    GlucometerApp().run()
+Glucometer().run()
