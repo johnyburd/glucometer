@@ -3,6 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.uix.actionbar import ActionBar
 from kivy.properties import StringProperty
+from time import gmtime, strftime
 import FlappyBird
 
 class MainScreen(Screen):
@@ -21,17 +22,20 @@ class ExtrasScreen(Screen):
     pass
 class MenuBar(ActionBar):
     def set_previous(self):
-        if sm.current_screen and sm.current_screen.name == 'main':
+        if sm.current_screen and sm.current_screen.name == 'data':
             return True
         return False
+    def get_time(self):
+       return strftime("%Y-%m-%d %H:%M", gmtime()) 
 
 
 kvfile = Builder.load_file("glucometer.kv")
 
 sm = ScreenManager()
+
+sm.add_widget(DataScreen(name='data'))
 sm.add_widget(MainScreen(name='main'))
 sm.add_widget(BGScreen(name='bgtest'))
-sm.add_widget(DataScreen(name='data'))
 sm.add_widget(SettingsScreen(name='settings'))
 sm.add_widget(ExtrasScreen(name='extras'))
 
@@ -46,7 +50,7 @@ class Glucometer(App):
         return sm.current_screen.name
     def test(self):
         return StringProperty('test')
-    def Flappy(self):
+    def flappy(self):
         FlappyBird.FlappyBirdApp().run()
 
 

@@ -29,64 +29,67 @@ ScreenManager:
 
 <MenuBar>:
     pos_hint: {'top':1}
+    #size_hint: 1, 0.5
+    height: 30
     ActionView:
         use_separator: True
         ActionPrevious:
             id: testid
 
-            title: 'this is a title'#app.test()#sm.current_screen.name #app.test_text()
-            on_release: app.root.current = 'main'
+            title: root.get_time()
+            on_press: app.root.transition.direction = 'right'
+            on_release: app.root.current = 'data'
             with_previous: root.set_previous()
+            #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
+            app_icon_width: 0.1
 
         ActionOverflow:
-        ActionButton:
-            text: 'Btn0'
-            icon: 'atlas://data/images/defaulttheme/audio-volume-high'
-        ActionButton:
-            text: 'Btn1'
-        ActionButton:
-            text: 'Btn2'
-        ActionButton:
-            text: 'Btn3'
-        ActionButton:
-            text: 'Btn4'
+
         ActionGroup:
-            text: 'Group1'
+            text: 'Screen'
             ActionButton:
-                text: 'Btn5'
+                text: 'Test BG'
+                on_press:
+                    app.root.transition.direction = 'left'
+                on_release: app.root.current = 'bgtest'
+
             ActionButton:
-                text: 'Btn6'
+                text: 'Data'
+                on_press:
+                    app.root.transition.direction = 'left'
+                on_release: app.root.current = 'data'
             ActionButton:
-                text: 'Btn7'
+                text: 'Settings'
+                on_press:
+                    app.root.transition.direction = 'left'
+                on_release: app.root.current = 'settings'
+            ActionButton:
+                text: 'Extras'
+                on_press:
+                    app.root.transition.direction = 'left'
+                on_release: app.root.current = 'extras'
     
-<MainScreen>:
-    name: 'main'
+            
+<DataScreen>:
+    name: 'data'
     BoxLayout:
         orientation: 'vertical'
-
         MenuBar
         Button:
-            on_release: app.root.current = 'bgtest'
-            text: 'test'#app.test
-            font_size: 40
-            id: butid
-        TextInput:
-            text: butid.state
-        Button:
-            on_release: app.root.current = 'data'
-            text: 'Data'
-            font_size: 40
-        Button:
-            on_release: app.root.current = 'settings'
-            text: 'Settings'
-            font_size: 40
-        Button:
-            on_release: app.Flappy()#app.root.current = 'extras'
-            text: 'Extas'
-            font_size: 40
-        Button:
-            on_release: app.print_current_screen()
-            
+            size_hint: 1,0.25
+            text: 'dropdown'
+        Label:
+            size_hint: 1,2.5
+            text: 'graph goes here'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'average'
+            Label:
+                text: 'average'
+            Label:
+                text: 'average'
+
 <BGScreen>:
     name: 'bgtest'
 
@@ -95,17 +98,30 @@ ScreenManager:
 
         MenuBar
         Button:
-            on_release: app.root.current = 'main'
             text: 'This is where you\'ll test BG'
-            font_size: 50
-<DataScreen>:
-    name: 'data'
-    MenuBar
+            font_size: 20
 <SettingsScreen>:
     name: 'settings'
-    MenuBar
+    BoxLayout:
+        orientation: 'vertical'
+        MenuBar
+        Button:
+            text: 'setting 1'
+        Button:
+            text: 'setting 2'
+        Button:
+            text: 'setting 3'
+        Button:
+            text: 'setting 4'
+        Button:
+            text: 'setting 5'
 <ExtrasScreen>:
     name: 'extras'
-    MenuBar
+    BoxLayout:
+        orientation: 'vertical'
+        MenuBar
+        Button:
+            text: 'Extras!'
+            on_release: app.flappy()
 
 
