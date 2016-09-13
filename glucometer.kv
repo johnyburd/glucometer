@@ -30,7 +30,7 @@ ScreenManager:
 <MenuBar>:
     pos_hint: {'top':1}
     #size_hint: 1, 0.5
-    height: 30
+    height: 40
     ActionView:
         use_separator: True
         ActionPrevious:
@@ -78,16 +78,17 @@ ScreenManager:
         Button:
             size_hint: 1,0.25
             text: 'dropdown'
-        Label:
+        Image:
             size_hint: 1,2.5
-            text: 'graph goes here'
+            source: 'testgraph.jpg'
+            #text: 'graph goes here'
         BoxLayout:
             orientation: 'horizontal'
-            Label:
+            Button:
                 text: 'average'
-            Label:
+            Button:
                 text: 'average'
-            Label:
+            Button:
                 text: 'average'
 
 <BGScreen>:
