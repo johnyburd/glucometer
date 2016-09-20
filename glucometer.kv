@@ -1,47 +1,24 @@
 #: import sm kivy.uix.screenmanager
+#:import Factory kivy.factory.Factory
 
-#slide
-#swap
-#fade
-#wipe
 
-#ScreenManagement:
-#    transition: sm.SlideTransition()
-#    MainScreen:
-#    BGScreen:
-#    DataScreen:
-#    SettingsScreen:
-#    ExtrasScreen:
-
-#<BoxLayout>:
-#    orientation: 'vertical'
-#
-#    canvas.before:
-#        Color:
-#            rgb: .6, .6, .6
-#        Rectangle:
-#            size: self.size
-#            source: 'data/background.png'
+<ActionSpinnerOptions@SpinnerOption>
+    background_color: .4, .4, .4, 1
+<ActionSpinner@Spinner+ActionItem>
+    canvas.before:
+        Color:
+            rgba: 0.128, 0.128, 0.128, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    border: 27, 20, 12, 12
+    background_normal: 'atlas://data/images/defaulttheme/action_group'
+    option_cls: Factory.ActionSpinnerOptions
 
 
 ScreenManager:
     id: sm
 
-<CustomDropDown>:
-    Button:
-        text: 'My first Item'
-        size_hint_y: None
-        height: 44
-        on_release: root.select('item1')
-    Label:
-        text: 'Unselectable item'
-        size_hint_y: None
-        height: 44
-    Button:
-        text: 'My second Item'
-        size_hint_y: None
-        height: 44
-        on_release: root.select('item2')
 
 <MenuBar>:
     pos_hint: {'top':1}
@@ -51,6 +28,7 @@ ScreenManager:
         use_separator: True
         ActionPrevious:
             id: testid
+            important: True
 
             title: root.set_time(0)
             on_press: app.root.transition.direction = 'right'
@@ -58,32 +36,13 @@ ScreenManager:
             with_previous: root.set_previous()
             #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
             app_icon_width: 0.1
+        ActionSpinner:
+            id: spnr
+            size_hint: 0.6, 1
+            important: False
+            values: root.screen_values
+            on_text: root.set_screen()
 
-        ActionOverflow:
-
-        ActionGroup:
-            text: 'Screen'
-            ActionButton:
-                text: 'Test BG'
-                on_press:
-                    app.root.transition.direction = 'left'
-                on_release: app.root.current = 'bgtest'
-
-            ActionButton:
-                text: 'Data'
-                on_press:
-                    app.root.transition.direction = 'left'
-                on_release: app.root.current = 'data'
-            ActionButton:
-                text: 'Settings'
-                on_press:
-                    app.root.transition.direction = 'left'
-                on_release: app.root.current = 'settings'
-            ActionButton:
-                text: 'Extras'
-                on_press:
-                    app.root.transition.direction = 'left'
-                on_release: app.root.current = 'extras'
 
 <HomeScreen>:
     name: 'data'
@@ -119,7 +78,7 @@ ScreenManager:
         orientation: 'vertical'
 
         MenuBar
-        CustomDropDown:
+            id: dropid
         ProgressBar:
             id: pb
             max: 100

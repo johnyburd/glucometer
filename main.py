@@ -7,16 +7,18 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.uix.progressbar import ProgressBar
 from kivy.properties import StringProperty
-from time import gmtime, strftime
+from time import localtime, strftime
 import FlappyBird
 
+sm = ScreenManager()
 class MainScreen(Screen):
     pass
+
 class BGScreen(Screen):
     def start_pb(self):
-        event = Clock.schedule_interval(self.update_pb, 1 / 30.)
+        event = Clock.schedule_interval(self.update_pb, 1 / 60.)
     def update_pb(self, dt):
-        self.ids.pb.value = self.ids.pb.value + (2./3.)
+        self.ids.pb.value = self.ids.pb.value + (1/3.)
         if self.ids.pb.value >= 100:
             self.ids.pb.value = 0
             return False
@@ -30,6 +32,11 @@ class ExtrasScreen(Screen):
 class HomeScreen(Screen):
     pass
 class MenuBar(ActionBar):
+    def __init__(self, **kwargs):
+
+        super(MenuBar,self).__init__(**kwargs)
+        self.screen_values = ['BG test', 'Data', 'Settings', 'Extras']
+        self.screen_ids = ['bgtest', 'data', 'settings', 'extras']
     def set_previous(self):
         if sm.current_screen and sm.current_screen.name == 'home':
             return True
@@ -37,23 +44,19 @@ class MenuBar(ActionBar):
     def set_time(self, dt):
         Clock.schedule_once(self.set_time, 30)
 
-        self.ids.testid.title = strftime("%Y-%m-%d %H:%M", gmtime())
+        self.ids.testid.title = strftime("%Y-%m-%d %H:%M", localtime())
         return self.ids.testid.title
-
-
-
-class CustomDropDown(DropDown):
-    pass
-
-dropdown = CustomDropDown()
-mainbutton = Button(text='Hello', size_hint=(None, None))
-mainbutton.bind(on_release=dropdown.open)
-dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
+    def set_screen(self):
+        #sm.current = 'data'
+        for i in xrange(0,len(self.screen_values)):
+            if self.screen_values[i] == self.ids.spnr.text:
+                sm.transition.direction = 'left'
+                sm.current = self.screen_ids[i]
+                break;
 
 
 kvfile = Builder.load_file("glucometer.kv")
 
-sm = ScreenManager()
 
 sm.add_widget(HomeScreen(name='home'))
 sm.add_widget(DataScreen(name='data'))
