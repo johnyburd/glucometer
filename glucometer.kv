@@ -52,7 +52,7 @@ ScreenManager:
         ActionPrevious:
             id: testid
 
-            title: root.get_time()
+            title: root.set_time(0)
             on_press: app.root.transition.direction = 'right'
             on_release: app.root.current = 'home'
             with_previous: root.set_previous()
@@ -120,10 +120,13 @@ ScreenManager:
 
         MenuBar
         CustomDropDown:
+        ProgressBar:
+            id: pb
+            max: 100
         Button:
             text: 'This is where you\'ll test BG'
             font_size: 20
-            on_release: app.opendropdown()
+            on_release: root.start_pb()#app.opendropdown()
 <SettingsScreen>:
     name: 'settings'
     BoxLayout:

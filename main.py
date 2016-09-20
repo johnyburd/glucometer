@@ -1,25 +1,30 @@
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.uix.actionbar import ActionBar
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.uix.progressbar import ProgressBar
 from kivy.properties import StringProperty
 from time import gmtime, strftime
 import FlappyBird
 
 class MainScreen(Screen):
     pass
-
 class BGScreen(Screen):
-    pass
+    def start_pb(self):
+        event = Clock.schedule_interval(self.update_pb, 1 / 30.)
+    def update_pb(self, dt):
+        self.ids.pb.value = self.ids.pb.value + (2./3.)
+        if self.ids.pb.value >= 100:
+            self.ids.pb.value = 0
+            return False
 
 class DataScreen(Screen):
     pass
-
 class SettingsScreen(Screen):
     pass
-
 class ExtrasScreen(Screen):
     pass
 class HomeScreen(Screen):
@@ -29,8 +34,12 @@ class MenuBar(ActionBar):
         if sm.current_screen and sm.current_screen.name == 'home':
             return True
         return False
-    def get_time(self):
-       return strftime("%Y-%m-%d %H:%M", gmtime())
+    def set_time(self, dt):
+        Clock.schedule_once(self.set_time, 30)
+
+        self.ids.testid.title = strftime("%Y-%m-%d %H:%M", gmtime())
+        return self.ids.testid.title
+
 
 
 class CustomDropDown(DropDown):
