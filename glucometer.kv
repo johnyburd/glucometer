@@ -14,47 +14,56 @@
     border: 27, 20, 12, 12
     background_normal: 'atlas://data/images/defaulttheme/action_group'
     option_cls: Factory.ActionSpinnerOptions
+#<CustomScreenManager>:
+#    id: sm
 
+BoxLayout:
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgb: .6, .6, .6
+        Rectangle:
+            size: self.size
+            source: 'res/background.png'
 
-ScreenManager:
-    id: sm
+    ActionBar:
+        #pos_hint: {'top':1}
+        #size_hint: 1, 0.5
+        height: 40
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                id: previousid
+                important: True
 
-
-<MenuBar>:
-    pos_hint: {'top':1}
-    #size_hint: 1, 0.5
-    height: 40
-    ActionView:
-        use_separator: True
-        ActionPrevious:
-            id: testid
-            important: True
-
-            title: root.set_time(0)
-            on_press: app.root.transition.direction = 'right'
-            on_release: app.root.current = 'home'
-            with_previous: root.set_previous()
-            #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
-            app_icon_width: 0.1
-        ActionSpinner:
-            id: spnr
-            size_hint: 0.6, 1
-            important: False
-            values: root.screen_values
-            on_text: root.set_screen()
+                title: app.set_time(0)
+                on_press: sm.transition.direction = 'right'
+                on_release: sm.current = 'home'
+                #with_previous: (False if sm.current == 'home' else True) if sm.current_screen else False
+                with_previous: app.set_previous()
+                #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
+                app_icon_width: 0.1
+            ActionSpinner:
+                id: spnr
+                size_hint: 0.6, 1
+                important: False
+                values: app.screen_names
+                on_text: app.set_screen()
+    CustomScreenManager:
+        id: sm
 
 
 <HomeScreen>:
-    name: 'data'
+    name: 'home'
     BoxLayout:
         orientation: 'vertical'
-        MenuBar
+    #    MenuBar
         Button:
             size_hint: 1,0.25
             text: 'dropdown'
         Image:
             size_hint: 1,2.5
-            source: 'testgraph.jpg'
+            source: 'res/testgraph.jpg'
             #text: 'graph goes here'
         BoxLayout:
             orientation: 'horizontal'
@@ -65,10 +74,10 @@ ScreenManager:
             Button:
                 text: 'average'
 <DataScreen>:
-    name: 'home'
+    name: 'data'
     BoxLayout:
         orientation: 'vertical'
-        MenuBar
+        #MenuBar
         Button
 
 <BGScreen>:
@@ -77,8 +86,6 @@ ScreenManager:
     BoxLayout:
         orientation: 'vertical'
 
-        MenuBar
-            id: dropid
         ProgressBar:
             id: pb
             max: 100
@@ -88,24 +95,25 @@ ScreenManager:
             on_release: root.start_pb()#app.opendropdown()
 <SettingsScreen>:
     name: 'settings'
-    BoxLayout:
-        orientation: 'vertical'
-        MenuBar
-        Button:
-            text: 'setting 1'
-        Button:
-            text: 'setting 2'
-        Button:
-            text: 'setting 3'
-        Button:
-            text: 'setting 4'
-        Button:
-            text: 'setting 5'
+    ScrollView:
+        #effect_cls: DampedScollEffect
+        do_scroll_x: False
+        BoxLayout:
+            orientation: 'vertical'
+            Button:
+                text: 'setting 1'
+            Button:
+                text: 'setting 2'
+            Button:
+                text: 'setting 3'
+            Button:
+                text: 'setting 4'
+            Button:
+                text: 'setting 5'
 <ExtrasScreen>:
     name: 'extras'
     BoxLayout:
         orientation: 'vertical'
-        MenuBar
         Button:
             size_hint: 1,.5
             text: 'Extras!'
