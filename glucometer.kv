@@ -57,14 +57,12 @@ BoxLayout:
     name: 'home'
     BoxLayout:
         orientation: 'vertical'
-    #    MenuBar
         Button:
             size_hint: 1,0.25
             text: 'dropdown'
         Image:
             size_hint: 1,2.5
             source: 'res/testgraph.jpg'
-            #text: 'graph goes here'
         BoxLayout:
             orientation: 'horizontal'
             Button:
@@ -75,11 +73,37 @@ BoxLayout:
                 text: 'average'
 <DataScreen>:
     name: 'data'
-    BoxLayout:
-        orientation: 'vertical'
-        #MenuBar
-        Button
-
+    ScrollView:
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            canvas:
+                Color:
+                    rgba: (1, 0, 0, .5) # DarkOliveGreen
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            Label:
+                id: bust
+                text: 'a string that is long ' * 10
+                font_size: 50
+                text_size: self.width, None
+                size_hint_y: None
+                height: self.texture_size[1]
+                canvas:
+                    Color:
+                        rgba: (0, 1, 0, .5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Label:
+                text: '2 strings that are long ' * 10
+                text_size: self.width, None
+                size_hint_y: None
+                height: self.texture_size[1]
+            Button:
+                text: 'just testing'
 <BGScreen>:
     name: 'bgtest'
 

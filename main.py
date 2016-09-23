@@ -7,13 +7,10 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.progressbar import ProgressBar
-from kivy.properties import StringProperty
-from kivy.properties import ListProperty
+from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from time import localtime, strftime
 import FlappyBird
 
-#sm = ScreenManager()
-            
 class MainScreen(Screen):
     pass
 
@@ -28,39 +25,13 @@ class BGScreen(Screen):
 
 class DataScreen(Screen):
     pass
+
 class SettingsScreen(Screen):
     pass
 class ExtrasScreen(Screen):
     pass
 class HomeScreen(Screen):
     pass
-class MenuBar(ActionBar):
-    def __init__(self, **kwargs):
-
-        super(MenuBar,self).__init__(**kwargs)
-        self.screen_values = ['BG test', 'Data', 'Settings', 'Extras']
-        self.screen_ids = ['bgtest', 'data', 'settings', 'extras']
-    def set_previous(self):
-        #if sm.current_screen and sm.current_screen.name == 'home':
-        #    return True
-        return False
-    def set_time(self, dt):
-        Clock.schedule_once(self.set_time, 30)
-
-        self.ids.testid.title = strftime("%Y-%m-%d %H:%M", localtime())
-        return self.ids.testid.title
-    def set_screen_text(self, title):
-        print title
-        self.ids.spnr.text = title
-    def set_screen(self):
-        #sm.current = 'data'
-        print(sm.current)
-        for i in xrange(0,len(self.screen_values)):
-            if self.screen_values[i] == self.ids.spnr.text:
-                sm.transition.direction = 'left'
-                sm.current = self.screen_ids[i]
-                self.set_screen_text(self.screen_values[i])
-                break;
 
 class CustomScreenManager(ScreenManager):
 
