@@ -41,7 +41,8 @@ BoxLayout:
                 on_release:
                     sm.current = 'home'
                     spnr.text = 'Home'
-                with_previous: True
+                    app.set_previous('home')
+                with_previous: False
                 #with_previous: (False if sm and sm.current_screen and sm.current_screen == 'home' else True)
                 #with_previous: app.set_previous()
                 #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
@@ -82,6 +83,8 @@ BoxLayout:
             cols: 3
             size_hint_y: None
             height: self.minimum_height
+            row_force_default: True
+            row_default_height: 30
             canvas:
                 Color:
                     #rgba: (1, 0, 0, .5) # DarkOliveGreen
@@ -124,21 +127,28 @@ BoxLayout:
             on_release: root.start_pb()#app.opendropdown()
 <SettingsScreen>:
     name: 'settings'
-    ScrollView:
+    #ScrollView:
         #effect_cls: DampedScollEffect
-        do_scroll_x: False
-        BoxLayout:
-            orientation: 'vertical'
-            Button:
-                text: 'setting 1'
-            Button:
-                text: 'setting 2'
-            Button:
-                text: 'setting 3'
-            Button:
-                text: 'setting 4'
-            Button:
-                text: 'setting 5'
+     #   do_scroll_x: False
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "Brightness " + str(int(brightnesssldr.value))
+            size_hint: 1,.4
+        Slider:
+            id: brightnesssldr
+            max: 1000
+            value: 500
+            step: 10
+            on_value: root.set_brightness(self.value)
+        Button:
+            text: 'setting 2'
+        Button:
+            text: 'setting 3'
+        Button:
+            text: 'setting 4'
+        Button:
+            text: 'setting 5'
 <ExtrasScreen>:
     name: 'extras'
     BoxLayout:

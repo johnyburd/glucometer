@@ -12,7 +12,8 @@ from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from time import localtime, strftime
 
 import FlappyBird
-from bloodglucosemanager import BloodGlucoseManager
+from subprocess import call
+from blood_glucose_manager import BloodGlucoseManager
 
 class MainScreen(Screen):
     pass
@@ -39,7 +40,11 @@ class DataScreen(Screen):
             self.ids.layout.add_widget(Label(text=str(row["Name"]),text_size=(None, None), size_hint_y=None))
             self.ids.layout.add_widget(Label(text=str(row["Price"]),text_size=(None, None), size_hint_y=None))
 class SettingsScreen(Screen):
-    pass
+    def set_brightness(self, brightness):
+        try:
+            call(['gpio', '-g', '18', int(brightness)])
+        except:
+            print 'probably not running on a raspberry pi.  can\'t set brightness to ' + str(int(brightness))
 class ExtrasScreen(Screen):
     pass
 class HomeScreen(Screen):
@@ -81,15 +86,13 @@ class Glucometer(App):
     def flappy(self):
         FlappyBird.FlappyBirdApp().run()
 
-    def set_previous(self):
-        #sm = self.root.ids.sm
-        print self.root == None
-        if self.root != None:
-            print self.root.ids.sm.current_screen.name
-            return True
-        if self.root and self.root.ids.sm.current and self.root.ids.sm.current != 'home':
-            return True
-        return False
+    def set_previous(self, screen_id):
+       # sm = self.root.ids.sm
+        if self.root and screen_id != 'home':
+            self.root.ids.previousid.with_previous = True
+            #print self.root.ids.previousid.with_previous
+        elif self.root:
+            self.root.ids.previousid.with_previous = False
     def set_time(self, dt):
         #title = self.root.ids.previousid.title
         Clock.schedule_once(self.set_time, 30)
@@ -98,11 +101,12 @@ class Glucometer(App):
         return title
     def set_screen(self):
         sm = self.root.ids.sm
-        print sm.current_screen.name
+        #print sm.current_screen.name
         for i in xrange(0,len(self.screen_names)):
             if self.screen_names[i] == self.root.ids.spnr.text:
                 sm.transition.direction = 'left'
                 sm.current = self.screen_ids[i]
+                self.set_previous(self.screen_ids[i])
                 break;
 
 
