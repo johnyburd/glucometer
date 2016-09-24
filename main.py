@@ -5,11 +5,14 @@ from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.uix.actionbar import ActionBar
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.progressbar import ProgressBar
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from time import localtime, strftime
+
 import FlappyBird
+from bloodglucosemanager import BloodGlucoseManager
 
 class MainScreen(Screen):
     pass
@@ -24,8 +27,17 @@ class BGScreen(Screen):
             return False
 
 class DataScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(DataScreen, self).__init__(**kwargs)
+        
+        bgm = BloodGlucoseManager()
+        rows = bgm.get_whole_table("Cars")
+        for row in rows:
+            info = "%s %s %s" % (row["Id"], row["Name"], row["Price"])
 
+            self.ids.layout.add_widget(Label(text=str(row["Id"]),text_size=(None, None), size_hint_y=None))
+            self.ids.layout.add_widget(Label(text=str(row["Name"]),text_size=(None, None), size_hint_y=None))
+            self.ids.layout.add_widget(Label(text=str(row["Price"]),text_size=(None, None), size_hint_y=None))
 class SettingsScreen(Screen):
     pass
 class ExtrasScreen(Screen):
@@ -35,8 +47,8 @@ class HomeScreen(Screen):
 
 class CustomScreenManager(ScreenManager):
 
-    screen_ids = ['home','bgtest', 'data', 'settings', 'extras']
-    screen_names = ['Home','BG test', 'Data', 'Settings', 'Extras']
+    screen_ids = ['bgtest', 'data', 'settings', 'extras']
+    screen_names = ['BG test', 'Data', 'Settings', 'Extras']
 
     def __init__(self, **kwargs):
 
@@ -71,8 +83,12 @@ class Glucometer(App):
 
     def set_previous(self):
         #sm = self.root.ids.sm
-        #if sm.current_screen and sm.current_screen.name == 'home':
-        #    return True
+        print self.root == None
+        if self.root != None:
+            print self.root.ids.sm.current_screen.name
+            return True
+        if self.root and self.root.ids.sm.current and self.root.ids.sm.current != 'home':
+            return True
         return False
     def set_time(self, dt):
         #title = self.root.ids.previousid.title
@@ -82,6 +98,7 @@ class Glucometer(App):
         return title
     def set_screen(self):
         sm = self.root.ids.sm
+        print sm.current_screen.name
         for i in xrange(0,len(self.screen_names)):
             if self.screen_names[i] == self.root.ids.spnr.text:
                 sm.transition.direction = 'left'

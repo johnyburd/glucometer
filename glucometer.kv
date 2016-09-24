@@ -38,9 +38,12 @@ BoxLayout:
 
                 title: app.set_time(0)
                 on_press: sm.transition.direction = 'right'
-                on_release: sm.current = 'home'
-                #with_previous: (False if sm.current == 'home' else True) if sm.current_screen else False
-                with_previous: app.set_previous()
+                on_release:
+                    sm.current = 'home'
+                    spnr.text = 'Home'
+                with_previous: True
+                #with_previous: (False if sm and sm.current_screen and sm.current_screen == 'home' else True)
+                #with_previous: app.set_previous()
                 #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
                 app_icon_width: 0.1
             ActionSpinner:
@@ -75,35 +78,37 @@ BoxLayout:
     name: 'data'
     ScrollView:
         GridLayout:
-            cols: 1
+            id: layout
+            cols: 3
             size_hint_y: None
             height: self.minimum_height
             canvas:
                 Color:
-                    rgba: (1, 0, 0, .5) # DarkOliveGreen
+                    #rgba: (1, 0, 0, .5) # DarkOliveGreen
+                    rgb: (.3,.3,.3)
                 Rectangle:
                     size: self.size
                     pos: self.pos
-            Label:
-                id: bust
-                text: 'a string that is long ' * 10
-                font_size: 50
-                text_size: self.width, None
-                size_hint_y: None
-                height: self.texture_size[1]
-                canvas:
-                    Color:
-                        rgba: (0, 1, 0, .5) # DarkOliveGreen
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-            Label:
-                text: '2 strings that are long ' * 10
-                text_size: self.width, None
-                size_hint_y: None
-                height: self.texture_size[1]
-            Button:
-                text: 'just testing'
+            #Label:
+            #    id: bust
+            #    text: 'a string that is long ' * 10
+            #    font_size: 50
+            #    text_size: self.width, None
+            #    size_hint_y: None
+            #    height: self.texture_size[1]
+            #    canvas:
+            #        Color:
+            #            rgba: (0, 1, 0, .5) # DarkOliveGreen
+            #        Rectangle:
+            #            size: self.size
+            #            pos: self.pos
+            #Label:
+            #    text: '2 strings that are long ' * 10
+            #    text_size: self.width, None
+            #    size_hint_y: None
+            #    height: self.texture_size[1]
+            #Button:
+            #    text: 'just testing'
 <BGScreen>:
     name: 'bgtest'
 
