@@ -42,7 +42,8 @@ class DataScreen(Screen):
 class SettingsScreen(Screen):
     def set_brightness(self, brightness):
         try:
-            call(['gpio', '-g', '18', int(brightness)])
+            call(['gpio', '-g', 'mode', '18', 'pwm'])
+            call(['gpio', '-g', 'pwm', '18', str(int(brightness))])
         except:
             print 'probably not running on a raspberry pi.  can\'t set brightness to ' + str(int(brightness))
 class ExtrasScreen(Screen):
