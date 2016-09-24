@@ -32,13 +32,18 @@ class DataScreen(Screen):
         super(DataScreen, self).__init__(**kwargs)
         
         bgm = BloodGlucoseManager()
-        rows = bgm.get_whole_table("Cars")
-        for row in rows:
-            info = "%s %s %s" % (row["Id"], row["Name"], row["Price"])
+        rows = bgm.get_whole_table("Data")
 
-            self.ids.layout.add_widget(Label(text=str(row["Id"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Name"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Price"]),text_size=(None, None), size_hint_y=None))
+        self.ids.layout.add_widget(Label(text="Date",text_size=(None, None), size_hint_y=None))
+        self.ids.layout.add_widget(Label(text="Bg",text_size=(None, None), size_hint_y=None))
+        self.ids.layout.add_widget(Label(text="Carbs",text_size=(None, None), size_hint_y=None))
+        self.ids.layout.add_widget(Label(text="Bolus",text_size=(None, None), size_hint_y=None))
+        for row in rows:
+
+            self.ids.layout.add_widget(Label(text=str(row["Date"]),text_size=(None, None), size_hint_y=None))
+            self.ids.layout.add_widget(Label(text=str(row["Bg"]),text_size=(None, None), size_hint_y=None))
+            self.ids.layout.add_widget(Label(text=str(row["Carbs"]),text_size=(None, None), size_hint_y=None))
+            self.ids.layout.add_widget(Label(text=str(row["Bolus"]),text_size=(None, None), size_hint_y=None))
 class SettingsScreen(Screen):
     def set_brightness(self, brightness):
         try:
