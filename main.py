@@ -15,32 +15,39 @@ from time import localtime, strftime
 import FlappyBird
 from subprocess import call
 from blood_glucose_manager import BloodGlucoseManager
+from blood_glucose_tester import BloodGlucoseTester
 
 class MainScreen(Screen):
     pass
-class BGPopup(Popup):
+class BGPopup(Popup): 
+    def __init__(self, bgtester, **kwargs):
+        super(BGPopup, self).__init__(**kwargs)
+        self.bgt = bgtester
 
     def start_pb(self):
         event = Clock.schedule_interval(self.update_pb, 1 / 60.)
     def update_pb(self, dt):
         self.ids.pb.value = self.ids.pb.value + (1/3.)
         if self.ids.pb.value >= 100:
-            self.display_BG()
+            self.display_BG('106')
             self.ids.pb.value = 0
             return False
-    def display_BG(self):
+    def display_BG(self, value):
         popup = Popup(title='BG',
-        content=Label(text='106',font_size=25),
+        content=Label(text=value,font_size=25),
         size_hint=(None, None), size=(125, 125))
-        popup.bind(on_dismiss=self.my_callback)
+        popup.bind(on_dismiss=self.dismiss_both)
         popup.open()
-    def my_callback(self,instance):
+    def dismiss_both(self,instance):
         self.dismiss()
         return False
 
 class BGScreen(Screen):
+    def __init__(self, **kwargs):
+        super(BGScreen, self).__init__(**kwargs)
+        self.bgt = BloodGlucoseTester(self) 
     def open_popup(self):
-        popup = BGPopup()
+        popup = BGPopup(self.bgt)
         popup.open()
 
 class DataScreen(Screen):
