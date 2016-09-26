@@ -4,7 +4,7 @@
 import sqlite3 as lite
 import sys
 
-class BloodGlucoseManager:
+class DataManager:
     def __init__(self):
         self.con = lite.connect('test.db')
 

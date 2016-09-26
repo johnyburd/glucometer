@@ -11,15 +11,16 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.progressbar import ProgressBar
 from kivy.properties import StringProperty, ListProperty, ObjectProperty, BooleanProperty
 from time import localtime, strftime
+import datetime
 
 import FlappyBird
 from subprocess import call
-from blood_glucose_manager import BloodGlucoseManager
+from data_manager import DataManager
 from blood_glucose_tester import BloodGlucoseTester
 
-class MainScreen(Screen):
+class NewEntryPopup(Popup):
     pass
-class BGPopup(Popup): 
+class BGPopup(Popup):
     def __init__(self, bgtester, **kwargs):
         super(BGPopup, self).__init__(**kwargs)
         self.bgt = bgtester
@@ -42,6 +43,8 @@ class BGPopup(Popup):
         self.dismiss()
         return False
 
+class MainScreen(Screen):
+    pass
 class BGScreen(Screen):
     def __init__(self, **kwargs):
         super(BGScreen, self).__init__(**kwargs)
@@ -54,7 +57,7 @@ class DataScreen(Screen):
     def __init__(self, **kwargs):
         super(DataScreen, self).__init__(**kwargs)
 
-        bgm = BloodGlucoseManager()
+        bgm = DataManager()
         rows = bgm.get_whole_table("Data")
 
         self.ids.layout.add_widget(Label(text="Date",text_size=(None, None), size_hint_y=None))
@@ -77,7 +80,42 @@ class SettingsScreen(Screen):
 class ExtrasScreen(Screen):
     pass
 class HomeScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+
+        super(HomeScreen, self).__init__(**kwargs)
+        negday = datetime.timedelta(days=-1)
+        today = datetime.date.today()
+
+        begindropdown = DropDown()
+        enddropdown = DropDown()
+        for index in range(200):
+            displaydate = (today + (negday * index))
+            year = displaydate.year
+            month = displaydate.month
+            day = displaydate.day
+
+            begindatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34)
+            enddatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34)
+
+            begindatebtn.bind(on_release=lambda begindatebtn: begindropdown.select(begindatebtn.text))
+            enddatebtn.bind(on_release=lambda enddatebtn: enddropdown.select(enddatebtn.text))
+
+            begindropdown.add_widget(begindatebtn)
+            enddropdown.add_widget(enddatebtn)
+        endbtn = Button(text='%s/%s/%s' % (today.month, today.day, today.year))
+        beginbtn = Button(text='%s/%s/%s' % ((today + negday*7).month, (today + negday*7).day, (today + negday*7).year))
+
+        beginbtn.bind(on_release=begindropdown.open)
+        endbtn.bind(on_release=enddropdown.open)
+
+        #otherbutton = Button(text='Date')
+        #otherbutton.bind(on_release=dropdown.open)
+
+        begindropdown.bind(on_select=lambda instance, x: setattr(beginbtn, 'text', x))
+        enddropdown.bind(on_select=lambda instance, x: setattr(endbtn, 'text', x))
+        #dropdown.bind(on_select=lambda instance, x: setattr(otherbutton, 'text', x))
+        self.ids.dateselectid.add_widget(beginbtn)
+        self.ids.dateselectid.add_widget(endbtn)
 
 class CustomScreenManager(ScreenManager):
 
@@ -123,10 +161,14 @@ class Glucometer(App):
         elif self.root:
             self.root.ids.previousid.with_previous = False
     def set_time(self, dt):
-        #title = self.root.ids.previousid.title
         Clock.schedule_once(self.set_time, 30)
 
-        title = strftime("%Y-%m-%d %H:%M", localtime())
+        #title = strftime("%Y-%m-%d %H:%M", localtime())
+        today = datetime.datetime.now()
+        hour = today.hour
+        if today.hour > 12:
+            hour = today.hour - 12
+        title = "%s %s %s:%s" % (today.day, today.strftime('%B')[:3], hour, today.minute)
         return title
     def set_screen(self):
         sm = self.root.ids.sm
@@ -137,6 +179,9 @@ class Glucometer(App):
                 sm.current = self.screen_ids[i]
                 self.set_previous(self.screen_ids[i])
                 break;
+    def open_new_entry_popup(self):
+        popup = NewEntryPopup()
+        popup.open()
 
 
 Glucometer().run()
