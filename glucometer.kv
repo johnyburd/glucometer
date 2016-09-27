@@ -63,109 +63,33 @@ BoxLayout:
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: 'info 1'
+            text: 'Date'
         TextInput:
+            id: date
             multiline: False
         Label:
-            text: 'info 2'
+            text: 'Bg'
         TextInput:
+            id: bg
             multiline: False
+            input_filter: 'int'
         Label:
-            text: 'info 3'
+            text: 'Carbs'
         TextInput:
+            id: carbs
+            multiline: False
+            input_filter: 'int'
         Label:
-            text: 'info 4'
+            text: 'Bolus'
         TextInput:
-
-<HomeScreen>:
-    name: 'home'
-    BoxLayout:
-        orientation: 'vertical'
-        BoxLayout:
-            id: dateselectid
-            size_hint: 1,0.25
-            #Button:
-            #    text: '9/19/16'
-            #Button:
-            #    text: '9/26/16'
-        Image:
-            size_hint: 1,2.5
-            source: 'res/testgraph.jpg'
-        BoxLayout:
-            orientation: 'horizontal'
-            BoxLayout:
-                orientation: 'vertical'
-                Label:
-                    size_hint_y: 0.3
-                    font_size: 10
-                    text: 'BG Average'
-                Label:
-                    font_size: 25
-                    text: '106'
-
-            BoxLayout:
-                orientation: 'vertical'
-                Label:
-                    size_hint_y: 0.3
-                    font_size: 10
-                    text: 'Deviation'
-                Label:
-                    font_size: 25
-                    text: '±12'
-
-            BoxLayout:
-                orientation: 'vertical'
-                Label:
-                    size_hint_y: 0.3
-                    font_size: 10
-                    text: 'Avg Carbs/Day'
-                Label:
-                    font_size: 25
-                    text: '156'
- 
-    
+            id: bolus
+            multiline: False
+            input_filter: 'int'
         Button:
-            size_hint: 1, 0.5
-            text: 'New Entry'
+            text: "submit"
             on_release:
-                app.open_new_entry_popup()
-<DataScreen>:
-    name: 'data'
-    ScrollView:
-        GridLayout:
-            id: layout
-            cols: 4
-            size_hint_y: None
-            height: self.minimum_height
-            row_force_default: True
-            row_default_height: 30
-            #canvas:
-            #    Color:
-                    #rgba: (1, 0, 0, .5) # DarkOliveGreen
-            #        rgb: (.3,.3,.3)
-            #    Rectangle:
-            #        size: self.size
-            #        pos: self.pos
-            #Label:
-            #    id: bust
-            #    text: 'a string that is long ' * 10
-            #    font_size: 50
-            #    text_size: self.width, Nonehh
-            #    size_hint_y: None
-            #    height: self.texture_size[1]
-            #    canvas:
-            #        Color:
-            #            rgba: (0, 1, 0, .5) # DarkOliveGreen
-            #        Rectangle:
-            #            size: self.size
-            #            pos: self.pos
-            #Label:
-            #    text: '2 strings that are long ' * 10
-            #    text_size: self.width, None
-            #    size_hint_y: None
-            #    height: self.texture_size[1]
-            #Button:
-            #    text: 'just testing'
+                root.submit()
+
 <BGPopup>:
     title: 'Insert Sample'
     BoxLayout:

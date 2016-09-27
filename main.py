@@ -17,9 +17,21 @@ from classes.FlappyBird import FlappyBirdApp
 from subprocess import call
 from classes.data_manager import DataManager
 from classes.blood_glucose_tester import BloodGlucoseTester
+from classes.data_screen import DataScreen
+from classes.home_screen import HomeScreen
 
 class NewEntryPopup(Popup):
-    pass
+    def __init__(self, **kwargs):
+        super(NewEntryPopup, self).__init__(**kwargs)
+        self.dm = DataManager()
+    def submit(self):
+        date = self.ids.date.text
+        bg = self.ids.bg.text
+        carbs = self.ids.bg.text
+        bolus = self.ids.bolus.text
+        self.dm.new_entry(date, bg, carbs, bolus)
+        self.dismiss()
+        
 class BGPopup(Popup):
     def __init__(self, bgtester, **kwargs):
         super(BGPopup, self).__init__(**kwargs)
@@ -53,23 +65,6 @@ class BGScreen(Screen):
         popup = BGPopup(self.bgt)
         popup.open()
 
-class DataScreen(Screen):
-    def __init__(self, **kwargs):
-        super(DataScreen, self).__init__(**kwargs)
-
-        bgm = DataManager()
-        rows = bgm.get_whole_table("data")
-
-        self.ids.layout.add_widget(Label(text="Date",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Bg",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Carbs",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Bolus",text_size=(None, None), size_hint_y=None))
-        for row in rows:
-
-            self.ids.layout.add_widget(Label(text=str(row["Date"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Bg"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Carbs"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Bolus"]),text_size=(None, None), size_hint_y=None))
 class SettingsScreen(Screen):
     def set_brightness(self, brightness):
         try:
@@ -79,40 +74,6 @@ class SettingsScreen(Screen):
             print 'probably not running on a raspberry pi.  can\'t set brightness to ' + str(int(brightness))
 class ExtrasScreen(Screen):
     pass
-class HomeScreen(Screen):
-    def __init__(self, **kwargs):
-
-        super(HomeScreen, self).__init__(**kwargs)
-        negday = datetime.timedelta(days=-1)
-        today = datetime.date.today()
-
-        begindropdown = DropDown()
-        enddropdown = DropDown()
-        for index in range(200):
-            displaydate = (today + (negday * index))
-            year = displaydate.year
-            month = displaydate.month
-            day = displaydate.day
-
-            begindatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34)
-            enddatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34)
-
-            begindatebtn.bind(on_release=lambda begindatebtn: begindropdown.select(begindatebtn.text))
-            enddatebtn.bind(on_release=lambda enddatebtn: enddropdown.select(enddatebtn.text))
-
-            begindropdown.add_widget(begindatebtn)
-            enddropdown.add_widget(enddatebtn)
-        endbtn = Button(text='%s/%s/%s' % (today.month, today.day, today.year))
-        beginbtn = Button(text='%s/%s/%s' % ((today + negday*7).month, (today + negday*7).day, (today + negday*7).year))
-
-        beginbtn.bind(on_release=begindropdown.open)
-        endbtn.bind(on_release=enddropdown.open)
-
-        begindropdown.bind(on_select=lambda instance, x: setattr(beginbtn, 'text', x))
-        enddropdown.bind(on_select=lambda instance, x: setattr(endbtn, 'text', x))
-        self.ids.dateselectid.add_widget(beginbtn)
-        self.ids.dateselectid.add_widget(Label(text='-', font_size=15,size_hint_x= 0.2))
-        self.ids.dateselectid.add_widget(endbtn)
 
 class CustomScreenManager(ScreenManager):
 

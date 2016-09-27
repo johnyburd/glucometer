@@ -1,0 +1,53 @@
+
+<HomeScreen>:
+    name: 'home'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            id: dateselectid
+            size_hint: 1,0.25
+            #Button:
+            #    text: '9/19/16'
+            #Button:
+            #    text: '9/26/16'
+        Image:
+            size_hint: 1,2.5
+            source: 'res/testgraph.jpg'
+        BoxLayout:
+            orientation: 'horizontal'
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    size_hint_y: 0.3
+                    font_size: 10
+                    text: 'BG Average'
+                Label:
+                    font_size: 25
+                    text: '106'
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    size_hint_y: 0.3
+                    font_size: 10
+                    text: 'Deviation'
+                Label:
+                    font_size: 25
+                    text: '±12'
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    size_hint_y: 0.3
+                    font_size: 10
+                    text: 'Avg Carbs/Day'
+                Label:
+                    font_size: 25
+                    text: '156'
+ 
+    
+        Button:
+            size_hint: 1, 0.5
+            text: 'New Entry'
+            on_release:
+                app.open_new_entry_popup()
