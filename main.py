@@ -13,10 +13,10 @@ from kivy.properties import StringProperty, ListProperty, ObjectProperty, Boolea
 from time import localtime, strftime
 import datetime
 
-import FlappyBird
+from classes.FlappyBird import FlappyBirdApp
 from subprocess import call
-from data_manager import DataManager
-from blood_glucose_tester import BloodGlucoseTester
+from classes.data_manager import DataManager
+from classes.blood_glucose_tester import BloodGlucoseTester
 
 class NewEntryPopup(Popup):
     pass
@@ -108,13 +108,10 @@ class HomeScreen(Screen):
         beginbtn.bind(on_release=begindropdown.open)
         endbtn.bind(on_release=enddropdown.open)
 
-        #otherbutton = Button(text='Date')
-        #otherbutton.bind(on_release=dropdown.open)
-
         begindropdown.bind(on_select=lambda instance, x: setattr(beginbtn, 'text', x))
         enddropdown.bind(on_select=lambda instance, x: setattr(endbtn, 'text', x))
-        #dropdown.bind(on_select=lambda instance, x: setattr(otherbutton, 'text', x))
         self.ids.dateselectid.add_widget(beginbtn)
+        self.ids.dateselectid.add_widget(Label(text='-', font_size=15,size_hint_x= 0.2))
         self.ids.dateselectid.add_widget(endbtn)
 
 class CustomScreenManager(ScreenManager):
@@ -151,7 +148,7 @@ class Glucometer(App):
     def test(self):
         return StringProperty('test')
     def flappy(self):
-        FlappyBird.FlappyBirdApp().run()
+        FlappyBirdApp().run()
 
     def set_previous(self, screen_id):
        # sm = self.root.ids.sm
@@ -166,9 +163,12 @@ class Glucometer(App):
         #title = strftime("%Y-%m-%d %H:%M", localtime())
         today = datetime.datetime.now()
         hour = today.hour
+        minute = today.minute
         if today.hour > 12:
             hour = today.hour - 12
-        title = "%s %s %s:%s" % (today.day, today.strftime('%B')[:3], hour, today.minute)
+        if minute < 10:
+            minute = '0' + str(minute)
+        title = "%s %s %s:%s" % (today.day, today.strftime('%B')[:3], hour, minute)
         return title
     def set_screen(self):
         sm = self.root.ids.sm
