@@ -6,7 +6,11 @@ import sys
 
 class DataManager:
     def __init__(self):
-        self.con = lite.connect('test.db')
+        self.con = lite.connect('data.db')
+
+    def new_entry(self, date, bg, carbs, bolus):
+        cur = self.con.cursor()
+        cur.execute("INSERT INTO data VALUES(?, ?, ?, ?)", data)
 
     # returns table in dict form
     def get_whole_table(self, table):

@@ -58,7 +58,7 @@ class DataScreen(Screen):
         super(DataScreen, self).__init__(**kwargs)
 
         bgm = DataManager()
-        rows = bgm.get_whole_table("Data")
+        rows = bgm.get_whole_table("data")
 
         self.ids.layout.add_widget(Label(text="Date",text_size=(None, None), size_hint_y=None))
         self.ids.layout.add_widget(Label(text="Bg",text_size=(None, None), size_hint_y=None))
