@@ -56,39 +56,6 @@ BoxLayout:
     CustomScreenManager:
         id: sm
 
-<NewEntryPopup>:
-    size: 200, 300
-    size_hint: None, None
-    title: 'New Entry'
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: 'Date'
-        TextInput:
-            id: date
-            multiline: False
-        Label:
-            text: 'Bg'
-        TextInput:
-            id: bg
-            multiline: False
-            input_filter: 'int'
-        Label:
-            text: 'Carbs'
-        TextInput:
-            id: carbs
-            multiline: False
-            input_filter: 'int'
-        Label:
-            text: 'Bolus'
-        TextInput:
-            id: bolus
-            multiline: False
-            input_filter: 'int'
-        Button:
-            text: "submit"
-            on_release:
-                root.submit()
 
 <BGPopup>:
     title: 'Insert Sample'

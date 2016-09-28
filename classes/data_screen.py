@@ -4,6 +4,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from .data_manager import DataManager
 from kivy.lang import Builder
+
 Builder.load_file('kvfiles/DataScreen.kv')
 
 class DataScreen(Screen):
@@ -24,7 +25,9 @@ class DataScreen(Screen):
             self.ids.layout.add_widget(Label(text=str(row["Bg"]),text_size=(None, None), size_hint_y=None))
             self.ids.layout.add_widget(Label(text=str(row["Carbs"]),text_size=(None, None), size_hint_y=None))
             self.ids.layout.add_widget(Label(text=str(row["Bolus"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Button(text="X", on_release=self.delete_row))
+
+            deletecallback = lambda x:self.delete_row(row["Id"])
+            self.ids.layout.add_widget(Button(text="x", on_release=deletecallback, size_hint_x=0.7))
 
     def delete_row(self, row):
         self.dm.delete_entry(row)

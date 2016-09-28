@@ -17,6 +17,9 @@ class DataManager:
         self.con.commit()
     def delete_entry(self, rowid):
         self.con.execute("DELETE from Data where Id=" + str(rowid))
+        self.con.commit()
+
+        print 'deleted ' + str(rowid)
 
     # returns table in dict form
     def get_whole_table(self, table):
