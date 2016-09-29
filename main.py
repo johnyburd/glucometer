@@ -21,22 +21,25 @@ from classes.data_screen import DataScreen
 from classes.home_screen import HomeScreen
 from classes.bg_screen import BGScreen
 from classes.settings_screen import SettingsScreen
+#from classes import settings
 
 class NewEntryPopup(Popup):
+
     def __init__(self, **kwargs):
         super(NewEntryPopup, self).__init__(**kwargs)
         self.dm = DataManager()
+
     def submit(self):
         date = self.ids.date.text
         bg = self.ids.bg.text
         carbs = self.ids.bg.text
         bolus = self.ids.bolus.text
         self.dm.new_entry(date, bg, carbs, bolus)
-        self.dismiss() 
-class MainScreen(Screen):
-    pass
+        self.dismiss()
+
 class ExtrasScreen(Screen):
     pass
+
 class CustomScreenManager(ScreenManager):
 
     screen_ids = ['bgtest', 'data', 'settings', 'extras']
@@ -48,7 +51,6 @@ class CustomScreenManager(ScreenManager):
 
         self.add_widget(HomeScreen(name='home'))
         self.add_widget(DataScreen(name='data'))
-        self.add_widget(MainScreen(name='main'))
         self.add_widget(BGScreen(name='bgtest'))
         self.add_widget(SettingsScreen(name='settings'))
         self.add_widget(ExtrasScreen(name='extras'))
@@ -60,7 +62,7 @@ class Glucometer(App):
     screen_names = CustomScreenManager.screen_names
     screen_ids = CustomScreenManager.screen_ids
 
-    def __init_(self, **kwargs):  # constructor is not necessary here
+    def __init_(self, **kwargs):
         super(Glucometer, self).__init__(**kwargs)
 
     def build(self):
