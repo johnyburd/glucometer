@@ -8,17 +8,19 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager
-from kivy.uix.progressbar import ProgressBar
 from kivy.properties import StringProperty, ListProperty, ObjectProperty, BooleanProperty
+
 from time import localtime, strftime
 import datetime
+from subprocess import call
 
 from classes.FlappyBird import FlappyBirdApp
-from subprocess import call
 from classes.data_manager import DataManager
 from classes.blood_glucose_tester import BloodGlucoseTester
 from classes.data_screen import DataScreen
 from classes.home_screen import HomeScreen
+from classes.bg_screen import BGScreen
+from classes.settings_screen import SettingsScreen
 
 class NewEntryPopup(Popup):
     def __init__(self, **kwargs):
@@ -30,51 +32,11 @@ class NewEntryPopup(Popup):
         carbs = self.ids.bg.text
         bolus = self.ids.bolus.text
         self.dm.new_entry(date, bg, carbs, bolus)
-        self.dismiss()
-        
-class BGPopup(Popup):
-    def __init__(self, bgtester, **kwargs):
-        super(BGPopup, self).__init__(**kwargs)
-        self.bgt = bgtester
-
-    def start_pb(self):
-        event = Clock.schedule_interval(self.update_pb, 1 / 60.)
-    def update_pb(self, dt):
-        self.ids.pb.value = self.ids.pb.value + (1/3.)
-        if self.ids.pb.value >= 100:
-            self.display_BG('106')
-            self.ids.pb.value = 0
-            return False
-    def display_BG(self, value):
-        popup = Popup(title='BG',
-        content=Label(text=value,font_size=25),
-        size_hint=(None, None), size=(125, 125))
-        popup.bind(on_dismiss=self.dismiss_both)
-        popup.open()
-    def dismiss_both(self,instance):
-        self.dismiss()
-        return False
-
+        self.dismiss() 
 class MainScreen(Screen):
     pass
-class BGScreen(Screen):
-    def __init__(self, **kwargs):
-        super(BGScreen, self).__init__(**kwargs)
-        self.bgt = BloodGlucoseTester(self) 
-    def open_popup(self):
-        popup = BGPopup(self.bgt)
-        popup.open()
-
-class SettingsScreen(Screen):
-    def set_brightness(self, brightness):
-        try:
-            call(['gpio', '-g', 'mode', '18', 'pwm'])
-            call(['gpio', '-g', 'pwm', '18', str(int(brightness))])
-        except:
-            print 'probably not running on a raspberry pi.  can\'t set brightness to ' + str(int(brightness))
 class ExtrasScreen(Screen):
     pass
-
 class CustomScreenManager(ScreenManager):
 
     screen_ids = ['bgtest', 'data', 'settings', 'extras']
@@ -106,8 +68,6 @@ class Glucometer(App):
 
     def print_current_screen(self):
         return sm.current_screen.name
-    def test(self):
-        return StringProperty('test')
     def flappy(self):
         FlappyBirdApp().run()
 
@@ -129,7 +89,7 @@ class Glucometer(App):
             hour = today.hour - 12
         if minute < 10:
             minute = '0' + str(minute)
-        title = "%s %s %s:%s" % (today.day, today.strftime('%B')[:3], hour, minute)
+        title = "%s %s %s:%s" % (today.strftime('%B')[:3], today.day, hour, minute)
         return title
     def set_screen(self):
         sm = self.root.ids.sm

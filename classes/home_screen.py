@@ -8,7 +8,7 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 import datetime
 
-Builder.load_file('kvfiles/HomeScreen.kv')
+Builder.load_file('kvfiles/home_screen.kv')
 
 
 class HomeScreen(Screen):

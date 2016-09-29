@@ -14,8 +14,6 @@
     border: 27, 20, 12, 12
     background_normal: 'atlas://data/images/defaulttheme/action_group'
     option_cls: Factory.ActionSpinnerOptions
-#<CustomScreenManager>:
-#    id: sm
 
 BoxLayout:
     orientation: 'vertical'
@@ -27,8 +25,6 @@ BoxLayout:
             source: 'res/background.png'
 
     ActionBar:
-        #pos_hint: {'top':1}
-        #size_hint: 1, 0.5
         height: 40
         ActionView:
             use_separator: True
@@ -43,9 +39,6 @@ BoxLayout:
                     spnr.text = 'Home'
                     app.set_previous('home')
                 with_previous: False
-                #with_previous: (False if sm and sm.current_screen and sm.current_screen == 'home' else True)
-                #with_previous: app.set_previous()
-                #app_icon: 'atlas://data/images/defaulttheme/previous_normal'
                 app_icon_width: 0.1
             ActionSpinner:
                 id: spnr
@@ -57,66 +50,7 @@ BoxLayout:
         id: sm
 
 
-<BGPopup>:
-    title: 'Insert Sample'
-    BoxLayout:
-        orientation: 'vertical'
-        Image:
-            size_hint: 1,1.5
-            source: 'res/blood.png'
-        ProgressBar:
-            id: pb
-            size_hint_y: .5
-            max: 100
-        Button:
-            size_hint: 1, .1
-            text: '(insert sample)'
-            on_release:
-                root.start_pb()
             
-<BGScreen>:
-    name: 'bgtest'
-
-    BoxLayout:
-        orientation: 'vertical'
-
-        Label:
-            font_size: 20
-            text: 'Please insert strip'
-
-            
-        Button:
-            text: '(insert strip)'
-            size_hint: 1, .1
-            on_release: 
-                root.open_popup()
-                #pop.open()
-                #root.start_pb()#app.opendropdown()
-<SettingsScreen>:
-    name: 'settings'
-    #ScrollView:
-        #effect_cls: DampedScollEffect
-     #   do_scroll_x: False
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: "Brightness " + str(int(brightnesssldr.value))
-            size_hint: 1,.4
-        Slider:
-            id: brightnesssldr
-            max: 1000
-            min: 10
-            value: 500
-            step: 10
-            on_value: root.set_brightness(self.value)
-        Button:
-            text: 'setting 2'
-        Button:
-            text: 'setting 3'
-        Button:
-            text: 'setting 4'
-        Button:
-            text: 'setting 5'
 <ExtrasScreen>:
     name: 'extras'
     BoxLayout:

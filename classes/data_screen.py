@@ -5,13 +5,19 @@ from kivy.uix.label import Label
 from .data_manager import DataManager
 from kivy.lang import Builder
 
-Builder.load_file('kvfiles/DataScreen.kv')
+Builder.load_file('kvfiles/data_screen.kv')
 
 class DataScreen(Screen):
     def __init__(self, **kwargs):
         super(DataScreen, self).__init__(**kwargs)
 
         self.dm = DataManager()
+        self.update_data()
+
+    def delete_row(self, row):
+        self.dm.delete_entry(row)
+    def update_data(self):
+
         rows = self.dm.get_whole_table("data")
 
         self.ids.layout.add_widget(Label(text="Date",text_size=(None, None), size_hint_y=None))
@@ -27,7 +33,4 @@ class DataScreen(Screen):
             self.ids.layout.add_widget(Label(text=str(row["Bolus"]),text_size=(None, None), size_hint_y=None))
 
             deletecallback = lambda x:self.delete_row(row["Id"])
-            self.ids.layout.add_widget(Button(text="x", on_release=deletecallback, size_hint_x=0.7))
-
-    def delete_row(self, row):
-        self.dm.delete_entry(row)
+            self.ids.layout.add_widget(Button(text="x", on_release=deletecallback, size_hint_x=(0.4)))
