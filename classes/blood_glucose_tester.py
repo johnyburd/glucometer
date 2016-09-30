@@ -30,6 +30,7 @@ class BloodGlucoseTester():
             pass
         try:
             poller_thread = ADCPollerThread(self)
+            poller_thread.daemon = True
             poller_thread.start()
         except:
             print 'could not start thread'

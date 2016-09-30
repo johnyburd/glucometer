@@ -6,6 +6,7 @@ import sys
 from scipy.stats import linregress
 from numpy import empty
 import math
+import datetime
 
 class DataManager:
     def __init__(self):
@@ -48,6 +49,12 @@ class DataManager:
     def delete_table(self, table):
         cur = self.con.cursor()
         cur.execute("DROP TABLE IF EXISTS " + table)
+    def str_to_date(self, strdate):
+        split_date = strdate.split('/')
+        m = int(split_date[0])
+        d = int(split_date[1])
+        y = int(split_date[2])
+        return datetime.datetime(year=y, month=m, day=d)
 
 if __name__ == "__main__":
     bgm = DataManager()
@@ -68,16 +75,17 @@ if __name__ == "__main__":
         ('9/24/16', 111, 26, 7)
     )
 
+    #bgm.delete_table('Data')
     #for point in data:
-        #bgm.new_entry(point[0],point[1],point[2],point[3])
-    #for row in rows:
-        #print "%s %s %s" % (row["Date"], row["Bg"], row["Carbs"])
+    #    bgm.new_entry(point[0],point[1],point[2],point[3])
+    for row in rows:
+        print "%s %s %s" % (row["Date"], row["Bg"], row["Carbs"])
         #print point[0]
     #bgm.delete_table('calibdata')
-    bgm.new_calib_entry(1, 1)
-    bgm.new_calib_entry(20, -100)
-    test = bgm.get_line()
-    print test(3700)
+    #bgm.new_calib_entry(1, 1)
+    #bgm.new_calib_entry(20, -100)
+    #test = bgm.get_line()
+    #print test(3700)
 
 
 
