@@ -25,12 +25,12 @@
     image_two: image_two
     Image:
         id: image_one
-        source: "images/background.png"
+        source: "res/images/background.png"
         pos: 0, 0
         size: 800, 600
     Image:
         id: image_two
-        source: "images/background.png"
+        source: "res/images/background.png"
         pos: root.width, 0
         size: 800, 600
 
@@ -46,11 +46,11 @@
             pos: self.x, 112
             size: self.width, self.gap_top - self.gap_size - 112
     Image:
-        source: "images/pipe_bottom.png"
+        source: "res/images/pipe_bottom.png"
         center_x: root.center_x
         y: root.gap_top - 20
     Image:
-        source: "images/pipe_top.png"
+        source: "res/images/pipe_top.png"
         center_x: root.center_x
         y: root.gap_top - root.gap_size - 40
 
@@ -59,6 +59,6 @@
     size: 50, 50
     Image:
         id: image
-        source: "images/flappy.png"
+        source: "res/images/flappy.png"
         size: root.size
         pos: root.pos

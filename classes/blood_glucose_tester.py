@@ -24,7 +24,10 @@ class ADCPollerThread (threading.Thread):
 class BloodGlucoseTester():
     def __init__(self, bgscreen):
         self.bgs = bgscreen
-        self.adc = Adafruit_ADS1x15.ADS1115()
+        try:
+            self.adc = Adafruit_ADS1x15.ADS1115()
+        except:
+            pass
         try:
             poller_thread = ADCPollerThread(self)
             poller_thread.start()

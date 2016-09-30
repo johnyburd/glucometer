@@ -63,17 +63,17 @@ class Mcnay(Widget):
         self._keyboard = None
 
     def switch_to_normal(self, dt):
-        self.bird_image.source = "images/flappyup.png"
+        self.bird_image.source = "res/images/flappyup.png"
         Clock.schedule_once(self.stop_jumping, self.jump_time  * (4.0 / 5.0))
 
     def stop_jumping(self, dt):
         self.jumping = False
-        self.bird_image.source = "images/flappy.png"
+        self.bird_image.source = "res/images/flappy.png"
         self.velocity_y = self.normal_velocity_y
 
     def on_touch_down(self, touch):
         self.jumping = True
-        self.bird_image.source = "images/flappynormal.png"
+        self.bird_image.source = "res/images/flappynormal.png"
         self.velocity_y = self.jump_height / (self.jump_time * 60.0)
         Clock.unschedule(self.stop_jumping)
         Clock.schedule_once(self.switch_to_normal, self.jump_time  / 5.0)
@@ -85,7 +85,7 @@ class Mcnay(Widget):
         self.pos = Vector(*self.velocity) + self.pos
         if self.pos[1] <= 104:
             Clock.unschedule(self.stop_jumping)
-            self.bird_image.source = "images/flappynormal.png"
+            self.bird_image.source = "res/images/flappynormal.png"
             self.pos = (self.pos[0], 104)
 
 class Obstacle(Widget):
