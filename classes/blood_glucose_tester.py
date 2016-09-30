@@ -7,16 +7,14 @@ try:
 except:
     print "Error: Adafruit module not loaded"
 
-STRIP_INSERT_THRESHOLD = 20000
+STRIP_INSERT_THRESHOLD = 5000
 SAMPLE_INSERT_THRESHOLD = 20000
 READING_DELAY = 5
+GAIN = 4
 
 class ADCPollerThread (threading.Thread):
     def __init__(self, bgtester):
         threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
-        self.counter = counter
         self.bgt = bgtester
     def run(self):
         print("Starting ADC Poller...")
@@ -26,8 +24,10 @@ class ADCPollerThread (threading.Thread):
 class BloodGlucoseTester():
     def __init__(self, bgscreen):
         self.bgs = bgscreen
+        self.adc = Adafruit_ADS1x15.ADS1115()
         try:
-            poller_thread = ADCPollerThread()
+            poller_thread = ADCPollerThread(self)
+            poller_thread.start()
         except:
             print 'could not start thread'
 
@@ -43,7 +43,7 @@ class BloodGlucoseTester():
     #  - 3 = Channel 2 minus channel 3
         strip_inserted = False
         while True:
-            value = adc.read_adc_difference(3, gain=GAIN)
+            value = self.adc.read_adc_difference(3, gain=GAIN)
             if value > STRIP_INSERT_THRESHOLD and not strip_inserted:
                 strip_inserted = True
                 time.sleep(1) # make sure we don't take a reading of inserting the strip
