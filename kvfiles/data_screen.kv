@@ -1,14 +1,77 @@
-
+<DateRow>:
+    canvas:
+        Color:
+            rgba: (.2, .2, .2, 0.6)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Label:
+        id: date
+        text_size: self.size
+        text: 'mon d, year'
+        halign: 'left'
+        valign: 'middle'
+        padding: 8,0
+<EntryRow>:
+    BoxLayout:
+        canvas:
+            Color:
+                rgba: (.25, .25, .25, 0.6)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        size_hint: 0.25, 1
+        Label:
+            id: time
+            padding: 8, 0
+            text: 'hr:min'
+    ScrollView:
+        effect_cls: "ScrollEffect"
+        on_scroll_start:
+            root.refresh_widths() # correct width cannot be determined until after the screen is built so it must be determined lastly
+        do_scroll_y: False
+        bar_width: 0
+        BoxLayout:
+            #cols: 5
+            id: layout
+            size_hint_x: None
+            width: sum(x.width for x in layout.children)
+            Label:
+                id: bg
+                text: str(sum(x.width for x in layout.children))
+                width: self.texture_size[0] + 10
+                size_hint_x: None
+            Label:
+                id: carbs
+                text: 'carb'
+                width: self.texture_size[0] + 10
+                size_hint_x: None
+            Label:
+                id: bolus
+                text: 'bl'
+                width: self.texture_size[0] + 10
+                size_hint_x: None
+            Label:
+                id: notes
+                text: 'notes loooonnnnng notes'
+                width: self.texture_size[0] + 10
+                size_hint_x: None
+            Button:
+                id: deletebtn
+                size_hint: None, 1
+                width: self.height
+                text: 'x'
 <DataScreen>:
     name: 'data'
     ScrollView:
         GridLayout:
             id: layout
-            cols: 5
+            cols: 1 # 5
             size_hint_y: None
             height: self.minimum_height
             row_force_default: True
             row_default_height: 30
+
             #canvas:
             #    Color:
                     #rgba: (1, 0, 0, .5) # DarkOliveGreen

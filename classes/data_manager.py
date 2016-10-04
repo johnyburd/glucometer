@@ -54,6 +54,8 @@ class DataManager:
         m = int(split_date[0])
         d = int(split_date[1])
         y = int(split_date[2])
+        if y < 100:
+            y = int('20' + str(y))
         return datetime.datetime(year=y, month=m, day=d)
 
 if __name__ == "__main__":
