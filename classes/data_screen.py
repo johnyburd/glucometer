@@ -1,4 +1,4 @@
-
+from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -16,7 +16,7 @@ class DateRow(BoxLayout):
         self.ids.date.text = "%s %s, %s" % (dateobj.strftime('%B')[:3], dateobj.day, dateobj.year)
 
 class EntryRow(BoxLayout):
- 
+
     widths_correct = BooleanProperty(False)
     def __init__(self, time, bg, carbs, bolus, notes, **kwargs):
         super(EntryRow, self).__init__(**kwargs)
@@ -34,18 +34,21 @@ class EntryRow(BoxLayout):
         i.bolus._label.refresh()
         i.notes._label.refresh()
         self.ids.layout.width = sum(x.width for x in self.ids.layout.children)
+        totalwidth = i.layout.width + i.time.width
+        if totalwidth < (240 + i.deletebtn.width):
+            i.spacer.width = 240 - totalwidth + i.deletebtn.width
+            self.refresh_widths()
 
 class DataScreen(Screen):
     def __init__(self, **kwargs):
         super(DataScreen, self).__init__(**kwargs)
 
         self.dm = DataManager()
-        self.update_data()
-        layout = self.ids.layout
+        self.entryrows = []
+        self.render_data()
 
-        #layout.add_widget(DateRow("10/31/9000"))
-        #layout.add_widget(EntryRow("10:34", 111, 111, 111, 'hello tsaoheustnh oesutnhaoe suth'))
-        #layout.add_widget(EntryRow("10:34", 111, 111, 111, 'hl'))
+    def render_data(self):
+        layout = self.ids.layout
 
         rows = self.dm.get_whole_table("data")
 
@@ -55,26 +58,15 @@ class DataScreen(Screen):
             if row["Date"] != lastdate:
                 lastdate = row["Date"]
                 layout.add_widget(DateRow(row["Date"]))
-            layout.add_widget(EntryRow("10:45", row['Bg'], row['Carbs'], row['bolus'], 'notes these are them'))
+            entry = EntryRow(row["Time"], row['Bg'], row['Carbs'], row['bolus'], row['Notes'])
+            layout.add_widget(entry)
+            self.entryrows.append(entry)
+    def update_row_widths(self):
+        for entry in self.entryrows:
+            entry.refresh_widths()
     def delete_row(self, row):
         self.dm.delete_entry(row)
-    def update_data(self):
-        pass
-'''
-        rows = self.dm.get_whole_table("data")
-
-        self.ids.layout.add_widget(Label(text="Date",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Bg",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Carbs",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Bolus",text_size=(None, None), size_hint_y=None))
-        self.ids.layout.add_widget(Label(text="Delete",text_size=(None, None), size_hint_y=None))
-        for row in rows:
-
-            self.ids.layout.add_widget(Label(text=str(row["Date"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Bg"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Carbs"]),text_size=(None, None), size_hint_y=None))
-            self.ids.layout.add_widget(Label(text=str(row["Bolus"]),text_size=(None, None), size_hint_y=None))
-
+    '''
             deletecallback = lambda x:self.delete_row(row["Id"])
             self.ids.layout.add_widget(Button(text="x", on_release=deletecallback, size_hint_x=(0.4)))
         '''

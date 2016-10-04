@@ -8,11 +8,11 @@
     Label:
         id: date
         text_size: self.size
-        text: 'mon d, year'
         halign: 'left'
         valign: 'middle'
         padding: 8,0
 <EntryRow>:
+    #on_parent: root.refresh_widths(12)
     BoxLayout:
         canvas:
             Color:
@@ -27,34 +27,31 @@
             text: 'hr:min'
     ScrollView:
         effect_cls: "ScrollEffect"
-        on_scroll_start:
-            root.refresh_widths() # correct width cannot be determined until after the screen is built so it must be determined lastly
         do_scroll_y: False
         bar_width: 0
         BoxLayout:
-            #cols: 5
             id: layout
             size_hint_x: None
             width: sum(x.width for x in layout.children)
             Label:
                 id: bg
-                text: str(sum(x.width for x in layout.children))
                 width: self.texture_size[0] + 10
                 size_hint_x: None
             Label:
                 id: carbs
-                text: 'carb'
                 width: self.texture_size[0] + 10
                 size_hint_x: None
             Label:
                 id: bolus
-                text: 'bl'
                 width: self.texture_size[0] + 10
                 size_hint_x: None
             Label:
                 id: notes
-                text: 'notes loooonnnnng notes'
                 width: self.texture_size[0] + 10
+                size_hint_x: None
+            Label:
+                id: spacer
+                width: 0
                 size_hint_x: None
             Button:
                 id: deletebtn
@@ -62,8 +59,10 @@
                 width: self.height
                 text: 'x'
 <DataScreen>:
+    on_enter: root.update_row_widths() # refresh widths because they can't be set until after the screen is rendered
     name: 'data'
     ScrollView:
+        do_scroll_x: False
         GridLayout:
             id: layout
             cols: 1 # 5
@@ -71,31 +70,3 @@
             height: self.minimum_height
             row_force_default: True
             row_default_height: 30
-
-            #canvas:
-            #    Color:
-                    #rgba: (1, 0, 0, .5) # DarkOliveGreen
-            #        rgb: (.3,.3,.3)
-            #    Rectangle:
-            #        size: self.size
-            #        pos: self.pos
-            #Label:
-            #    id: bust
-            #    text: 'a string that is long ' * 10
-            #    font_size: 50
-            #    text_size: self.width, Nonehh
-            #    size_hint_y: None
-            #    height: self.texture_size[1]
-            #    canvas:
-            #        Color:
-            #            rgba: (0, 1, 0, .5) # DarkOliveGreen
-            #        Rectangle:
-            #            size: self.size
-            #            pos: self.pos
-            #Label:
-            #    text: '2 strings that are long ' * 10
-            #    text_size: self.width, None
-            #    size_hint_y: None
-            #    height: self.texture_size[1]
-            #Button:
-            #    text: 'just testing'
