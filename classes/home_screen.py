@@ -34,15 +34,15 @@ class HomeScreen(Screen):
             month = displaydate.month
             day = displaydate.day
 
-            begindatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34)
-            enddatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34)
+            begindatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34, id='up')
+            enddatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34, id='lo')
 
             begindatebtn.bind(on_release=lambda begindatebtn: self.begindropdown.select(begindatebtn.text))
 
             enddatebtn.bind(on_release=lambda enddatebtn: self.enddropdown.select(enddatebtn.text))
 
-            begindatebtn.bind(on_release=self.update_graph)
-            enddatebtn.bind(on_release=self.update_graph)
+            begindatebtn.bind(on_press=self.update_graph)
+            enddatebtn.bind(on_press=self.update_graph)
 
             self.begindropdown.add_widget(begindatebtn)
             self.enddropdown.add_widget(enddatebtn)
@@ -51,6 +51,8 @@ class HomeScreen(Screen):
 
         self.beginbtn.bind(on_release=self.begindropdown.open)
         self.endbtn.bind(on_release=self.enddropdown.open)
+        #self.beginbtn.bind(on_text=self.update_graph)
+        #self.endbtn.bind(on_text=self.update_grapt)
 
         self.begindropdown.bind(on_select=lambda instance, x: setattr(self.beginbtn, 'text', x))
         self.enddropdown.bind(on_select=lambda instance, x: setattr(self.endbtn, 'text', x))
@@ -59,13 +61,23 @@ class HomeScreen(Screen):
         self.ids.dateselectid.add_widget(self.endbtn)
 
 
-        self.update_graph('fakeinstance')
+        self.update_graph(Button(text='fakeinstance'))
 
     def update_graph(self,instance):
-        upper_bound = self.dm.str_to_date(self.endbtn.text)
-        lower_bound = self.dm.str_to_date(self.beginbtn.text)
-        self.ids.graphid.xmin = lower_bound.day
-        self.ids.graphid.xmax = upper_bound.day
+        if str(instance.id) == 'up':
+            upper_bound = self.dm.str_to_date(instance.text)
+            lower_bound = self.dm.str_to_date(self.beginbtn.text)
+        elif str(instance.id) == 'lo':
+            upper_bound = self.dm.str_to_date(self.endbtn.text)
+            lower_bound = self.dm.str_to_date(instance.text)
+        else:
+            upper_bound = self.dm.str_to_date(self.endbtn.text)
+            lower_bound = self.dm.str_to_date(self.beginbtn.text)
+
+        print int(str(lower_bound.month) + str(lower_bound.day))
+        print int(str(upper_bound.month) + str(upper_bound.day))
+        self.ids.graphid.xmin = int(str(lower_bound.month) + str(lower_bound.day))
+        self.ids.graphid.xmax = int(str(upper_bound.month) + str(upper_bound.month))
         plot = MeshLinePlot(color=[.1, .7, 1, 1])
         #plot.points = [(x, 30*sin(x / 10.)+100+(x)) for x in range(0, 101)]
         rows = self.dm.get_whole_table("data")
@@ -73,8 +85,9 @@ class HomeScreen(Screen):
             date = self.dm.str_to_date(row["Date"])
             if date > upper_bound or date < lower_bound:
                 rows.remove(row)
+        date = self.dm.str_to_date(row["Date"])
 
-        plot.points =[(self.dm.str_to_date(row["Date"]).day, row["Bg"]) for row in rows]
+        plot.points =[(int(str(self.dm.str_to_date(row["Date"]).month)+str(self.dm.str_to_date(row["Date"]).day)), row["Bg"]) for row in rows]
         #plot.points = pointslist
 
 
