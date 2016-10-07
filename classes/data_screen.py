@@ -35,8 +35,8 @@ class EntryRow(BoxLayout):
         i.notes._label.refresh()
         self.ids.layout.width = sum(x.width for x in self.ids.layout.children)
         totalwidth = i.layout.width + i.time.width
-        if totalwidth < (240 + i.deletebtn.width):
-            i.spacer.width = 240 - totalwidth + i.deletebtn.width
+        if totalwidth < (240 + i.deletebtn.width + i.editbtn.width):
+            i.spacer.width = 240 - totalwidth + i.deletebtn.width + i.editbtn.width
             self.refresh_widths()
 
 class DataScreen(Screen):

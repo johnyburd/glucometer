@@ -54,10 +54,19 @@
                 width: 0
                 size_hint_x: None
             Button:
+                id: editbtn
+                size_hint: None, 1
+                width: self.height
+                background_color: (.01,.87,.05,1)
+                font_size: 10
+                text: 'edit'
+            Button:
                 id: deletebtn
                 size_hint: None, 1
                 width: self.height
-                text: 'x'
+                background_color: (1,0,0,1)
+                font_size: 20
+                text: 'X'
 <DataScreen>:
     on_enter: root.update_row_widths() # refresh widths because they can't be set until after the screen is rendered
     name: 'data'
