@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -34,8 +34,8 @@ class HomeScreen(Screen):
             month = displaydate.month
             day = displaydate.day
 
-            begindatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34, id='up')
-            enddatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34, id='lo')
+            begindatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34, id='lo')
+            enddatebtn = Button(text='%s/%s/%s' % (month,day,year), size_hint_y=None, height=34, id='up')
 
             begindatebtn.bind(on_release=lambda begindatebtn: self.begindropdown.select(begindatebtn.text))
 
@@ -64,7 +64,8 @@ class HomeScreen(Screen):
         self.update_graph(Button(text='fakeinstance'))
 
     def update_graph(self,instance):
-        if str(instance.id) == 'up':
+        ids = self.ids
+        if str(instance.id) == 'up':  # determine upper/lower bounds
             upper_bound = self.dm.str_to_date(instance.text)
             lower_bound = self.dm.str_to_date(self.beginbtn.text)
         elif str(instance.id) == 'lo':
@@ -74,21 +75,46 @@ class HomeScreen(Screen):
             upper_bound = self.dm.str_to_date(self.endbtn.text)
             lower_bound = self.dm.str_to_date(self.beginbtn.text)
 
-        print int(str(lower_bound.month) + str(lower_bound.day))
-        print int(str(upper_bound.month) + str(upper_bound.day))
-        self.ids.graphid.xmin = int(str(lower_bound.month) + str(lower_bound.day))
-        self.ids.graphid.xmax = int(str(upper_bound.month) + str(upper_bound.month))
+        if lower_bound.day >= 10:
+            ids.graphid.xmin = int(str(lower_bound.month) + str(lower_bound.day))
+        else:
+            ids.graphid.xmin = int(str(lower_bound.month) + '0' + str(lower_bound.day))
+        if upper_bound.day >= 10:
+            ids.graphid.xmax = int(str(upper_bound.month) + str(upper_bound.day))
+        else:
+            ids.graphid.xmax = int(str(upper_bound.month) + '0' + str(upper_bound.day))
+
+
+        print ids.graphid.xmax
+        print ids.graphid.xmin
         plot = MeshLinePlot(color=[.1, .7, 1, 1])
         #plot.points = [(x, 30*sin(x / 10.)+100+(x)) for x in range(0, 101)]
         rows = self.dm.get_whole_table("data")
+        result = []
+        carbavg = 0
+        bgavg = 0
+        dev = 0
         for row in rows:
             date = self.dm.str_to_date(row["Date"])
-            if date > upper_bound or date < lower_bound:
-                rows.remove(row)
-        date = self.dm.str_to_date(row["Date"])
+            if date >= lower_bound and date <= upper_bound:
+                carbavg += row["Carbs"]
+                bgavg += row["Bg"]
+                dev = 10
+                result.append(row)
+        rows = result
+        ids.average_lbl.text = str(bgavg/len(rows))
+        ids.deviation_lbl.text = "±" + str(dev/len(rows))
+        ids.carbs_lbl.text = str(carbavg/len(rows))
 
-        plot.points =[(int(str(self.dm.str_to_date(row["Date"]).month)+str(self.dm.str_to_date(row["Date"]).day)), row["Bg"]) for row in rows]
-        #plot.points = pointslist
 
+        #plot.points =[(int(str(self.dm.str_to_date(row["Date"]).month)+str(self.dm.str_to_date(row["Date"]).day)), row["Bg"]) for row in rows]
+        for row in rows:
+            date = self.dm.str_to_date(row["Date"])
+            if date.day >= 10:
+                dateint = int(str(date.month)+str(date.day))
+            else:
+                dateint = int(str(date.month) + '0' + str(date.day))
+            point = (dateint, row["Bg"])
+            plot.points.append(point)
 
-        self.ids.graphid.add_plot(plot)
+        ids.graphid.add_plot(plot)

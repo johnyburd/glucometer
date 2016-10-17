@@ -19,7 +19,7 @@
             xLabel: 'X'
             yLabel: 'mg/dL'
             x_ticks_minor: 0
-            x_ticks_major: 5
+            x_ticks_major: 25
             y_ticks_major: 25
             y_grid_label: True
             x_grid_label: True
@@ -37,8 +37,9 @@
             BoxLayout:
                 orientation: 'vertical'
                 Label:
+                    id: average_lbl
                     font_size: 25
-                    text: '106'
+                    text: 'if you'
                 Label:
                     size_hint_y: 0.3
                     font_size: 10
@@ -47,8 +48,9 @@
             BoxLayout:
                 orientation: 'vertical'
                 Label:
+                    id: deviation_lbl
                     font_size: 25
-                    text: '±12'
+                    text: 'can read this'
                 Label:
                     size_hint_y: 0.3
                     font_size: 10
@@ -57,8 +59,9 @@
             BoxLayout:
                 orientation: 'vertical'
                 Label:
+                    id: carbs_lbl
                     font_size: 25
-                    text: '156'
+                    text: 'something is wrong'
                 Label:
                     size_hint_y: 0.3
                     font_size: 10

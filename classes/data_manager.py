@@ -75,12 +75,17 @@ if __name__ == "__main__":
         ('2:29','9/15/16', 109, 60, 15, 'testing'),
         ('5:37','9/20/16', 94, 44, 11, '44, 11'),
         ('11:01','9/23/16', 117, 6, 2, 'notesnotesnotes'),
-        ('9:36','9/24/16', 111, 26, 7, ' ')
+        ('11:01','10/4/16', 117, 6, 2, 'notesnotesnotes'),
+        ('9:36','10/9/16', 111, 26, 7, ' '),
+        ('11:01','10/11/16', 117, 6, 2, 'notesnotesnotes'),
+        ('9:36','10/15/16', 111, 26, 7, ' '),
+        ('9:36','10/17/16', 111, 26, 7, ' ')
     )
 
-    #bgm.delete_table('Data')
-    #for point in data:
-    #    bgm.new_entry(point[0],point[1],point[2],point[3], point[4], point[5])
+    bgm.delete_table('Data')
+    bgm = DataManager()
+    for point in data:
+        bgm.new_entry(point[0],point[1],point[2],point[3], point[4], point[5])
     #for row in rows:
         #print "%s %s %s" % (row["Date"], row["Bg"], row["Carbs"])
         #print point[0]

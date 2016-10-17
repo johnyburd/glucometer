@@ -83,7 +83,6 @@ class Glucometer(App):
     def set_time(self, dt):
         Clock.schedule_once(self.set_time, 30)
 
-        #title = strftime("%Y-%m-%d %H:%M", localtime())
         today = datetime.datetime.now()
         hour = today.hour
         minute = today.minute
@@ -91,8 +90,10 @@ class Glucometer(App):
             hour = today.hour - 12
         if minute < 10:
             minute = '0' + str(minute)
-        title = "%s %s %s:%s" % (today.strftime('%B')[:3], today.day, hour, minute)
-        return title
+        time = "%s %s %s:%s" % (today.strftime('%B')[:3], today.day, hour, minute)
+        if self.root:
+            self.root.ids.previousid.title = time
+        return time
     def set_screen(self):
         sm = self.root.ids.sm
         #print sm.current_screen.name
