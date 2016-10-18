@@ -15,6 +15,9 @@ from classes.data_manager import DataManager
 
 Builder.load_file('kvfiles/home_screen.kv')
 
+from kivy.core.window import Window
+from kivy.uix.widget import Widget
+
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
@@ -118,3 +121,40 @@ class HomeScreen(Screen):
             plot.points.append(point)
 
         ids.graphid.add_plot(plot)
+    def test_keyboard(self):
+
+       from kivy.base import runTouchApp
+       runTouchApp(MyKeyboardListener(height = 500, size_hint_y= 1, scale_max=3, scale_min = 2, width = 300, docked = True))
+
+class MyKeyboardListener(Widget):
+
+    def __init__(self, **kwargs):
+        super(MyKeyboardListener, self).__init__(**kwargs)
+        self._keyboard = Window.request_keyboard(
+            self._keyboard_closed, self, 'text')
+        if self._keyboard.widget:
+            # If it exists, this widget is a VKeyboard object which you can use
+            # to change the keyboard layout.
+            pass
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
+        #self.size = (50, 100)
+        print self.size
+
+    def _keyboard_closed(self):
+        print('My keyboard have been closed!')
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
+
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        print('The key', keycode, 'have been pressed')
+        print(' - text is %r' % text)
+        print(' - modifiers are %r' % modifiers)
+
+        # Keycode is composed of an integer + a string
+        # If we hit escape, release the keyboard
+        if keycode[1] == 'escape':
+            keyboard.release()
+
+        # Return True to accept the key. Otherwise, it will be used by
+        # the system.
+        return True

@@ -9,6 +9,8 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager
 from kivy.properties import StringProperty, ListProperty, ObjectProperty, BooleanProperty
+from kivy.core.window import Window
+from kivy.uix.widget import Widget
 
 from time import localtime, strftime
 import datetime
@@ -30,12 +32,16 @@ class NewEntryPopup(Popup):
         self.dm = DataManager()
 
     def submit(self):
-        date = self.ids.date.text
-        bg = self.ids.bg.text
-        carbs = self.ids.bg.text
-        bolus = self.ids.bolus.text
-        self.dm.new_entry(date, bg, carbs, bolus)
-        self.dismiss()
+        ids = self.ids
+        time = ids.time.text
+        date = ids.date.text
+        bg = ids.bg.text
+        carbs = ids.carbs.text
+        bolus = ids.bolus.text
+        notes = ids.notes.text
+        if time != '' and date != '' and bg != '' and carbs != '' and bolus != '' and notes != '':
+            self.dm.new_entry(time, date, bg, carbs, bolus, notes)
+            self.dismiss()
 
 class ExtrasScreen(Screen):
     pass
@@ -107,5 +113,35 @@ class Glucometer(App):
         popup = NewEntryPopup()
         popup.open()
 
+class MyKeyboardListener(Widget):
+
+    def __init__(self, **kwargs):
+        super(MyKeyboardListener, self).__init__(**kwargs)
+        self._keyboard = Window.request_keyboard(
+            self._keyboard_closed, self, 'text')
+        if self._keyboard.widget:
+            # If it exists, this widget is a VKeyboard object which you can use
+            # to change the keyboard layout.
+            pass
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
+
+    def _keyboard_closed(self):
+        print('My keyboard have been closed!')
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
+
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        print('The key', keycode, 'have been pressed')
+        print(' - text is %r' % text)
+        print(' - modifiers are %r' % modifiers)
+
+        # Keycode is composed of an integer + a string
+        # If we hit escape, release the keyboard
+        if keycode[1] == 'escape':
+            keyboard.release()
+
+        # Return True to accept the key. Otherwise, it will be used by
+        # the system.
+        return True
 
 Glucometer().run()
