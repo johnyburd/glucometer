@@ -3,6 +3,12 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.dropdown import DropDown
+
+from kivy.uix.vkeyboard import VKeyboard
+from kivy.resources import resource_find
+from kivy.graphics import Color, BorderImage, Canvas
+from kivy.core.image import Image
+
 from .data_manager import DataManager
 from kivy.lang import Builder
 from kivy.properties import ListProperty
@@ -105,9 +111,11 @@ class HomeScreen(Screen):
                 dev = 10
                 result.append(row)
         rows = result
-        ids.average_lbl.text = str(bgavg/len(rows))
-        ids.deviation_lbl.text = "±" + str(dev/len(rows))
-        ids.carbs_lbl.text = str(carbavg/len(rows))
+        if len(rows) > 0:
+            ids.average_lbl.text = str(bgavg/len(rows))
+            ids.deviation_lbl.text = "±" + str(dev/len(rows))
+            ids.carbs_lbl.text = str(carbavg/len(rows))
+
 
 
         #plot.points =[(int(str(self.dm.str_to_date(row["Date"]).month)+str(self.dm.str_to_date(row["Date"]).day)), row["Bg"]) for row in rows]
@@ -124,20 +132,24 @@ class HomeScreen(Screen):
     def test_keyboard(self):
 
        from kivy.base import runTouchApp
-       runTouchApp(MyKeyboardListener(height = 500, size_hint_y= 1, scale_max=3, scale_min = 2, width = 300, docked = True))
+       runTouchApp(MyKeyboardListener())
 
 class MyKeyboardListener(Widget):
-
     def __init__(self, **kwargs):
+        VKeyboard.draw_keys = draw_keys_improved
         super(MyKeyboardListener, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(
             self._keyboard_closed, self, 'text')
         if self._keyboard.widget:
             # If it exists, this widget is a VKeyboard object which you can use
             # to change the keyboard layout.
-            pass
+            vkeyboard = self._keyboard.widget
+            print type(vkeyboard)
+            print type(self._keyboard)
+            vkeyboard.layout = 'numeric.json'
+            vkeyboard.height = 350
+            print vkeyboard.height
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
-        #self.size = (50, 100)
         print self.size
 
     def _keyboard_closed(self):
@@ -158,3 +170,50 @@ class MyKeyboardListener(Widget):
         # Return True to accept the key. Otherwise, it will be used by
         # the system.
         return True
+
+def draw_keys_improved(self):
+    layout = self.available_layouts[self.layout]
+    layout_rows = layout['rows']
+    layout_geometry = self.layout_geometry
+    layout_mode = self.layout_mode
+
+    # draw background
+    w, h = self.size
+
+    background = resource_find(self.background_disabled
+                                if self.disabled else
+                                self.background)
+    texture = Image(background, mipmap=True).texture
+    self.background_key_layer.clear()
+    with self.background_key_layer:
+        Color(*self.background_color)
+        BorderImage(texture=texture, size=self.size,
+                    border=self.background_border)
+
+    # XXX separate drawing the keys and the fonts to avoid
+    # XXX reloading the texture each time
+
+    # first draw keys without the font
+    key_normal = resource_find(self.key_background_disabled_normal
+                                if self.disabled else
+                                self.key_background_normal)
+    texture = Image(key_normal, mipmap=True).texture
+    with self.background_key_layer:
+        for line_nb in range(1, layout_rows + 1):
+            for pos, size in layout_geometry['LINE_%d' % line_nb]:
+                    BorderImage(texture=texture, pos=pos, size=size,
+                                border=self.key_border)
+
+    # then draw the text
+    # calculate font_size
+    font_size = int(w) / 12
+    # draw
+    for line_nb in range(1, layout_rows + 1):
+        key_nb = 0
+        for pos, size in layout_geometry['LINE_%d' % line_nb]:
+            # retrieve the relative text
+            text = layout[layout_mode + '_' + str(line_nb)][key_nb][0]
+            l = Label(text=text, font_size=font_size, pos=pos, size=size,
+                        font_name=self.font_name)
+            self.add_widget(l)
+            key_nb += 1
