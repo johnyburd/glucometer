@@ -136,7 +136,7 @@ class HomeScreen(Screen):
 
 class MyKeyboardListener(Widget):
     def __init__(self, **kwargs):
-        VKeyboard.draw_keys = draw_keys_improved
+        VKeyboard.draw_keys = draw_keys_improved # replaces library's function with one below that has a larger font size
         super(MyKeyboardListener, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(
             self._keyboard_closed, self, 'text')
@@ -148,6 +148,7 @@ class MyKeyboardListener(Widget):
             print type(self._keyboard)
             vkeyboard.layout = 'numeric.json'
             vkeyboard.height = 350
+            #vkeyboard.font_size = 500
             print vkeyboard.height
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         print self.size
