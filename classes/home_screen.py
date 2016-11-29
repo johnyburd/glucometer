@@ -1,4 +1,6 @@
+# Class for the home screen.  Manages quick display graphs and averages.
 # -*- coding: utf-8 -*-
+
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.label import Label

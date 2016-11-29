@@ -1,3 +1,5 @@
+# Main file. Manages ActionBar, universal popups, time, screen manager, etc
+
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.lang import Builder

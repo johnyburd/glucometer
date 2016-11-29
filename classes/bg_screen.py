@@ -1,3 +1,5 @@
+# Class for the bg_screen. Manages testing prompts and popups
+
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 from kivy.uix.button import Button

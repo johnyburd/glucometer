@@ -1,3 +1,5 @@
+# Class for the data_screen.  Manages displaying data stored by the meter.
+
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button

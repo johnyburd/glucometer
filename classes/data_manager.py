@@ -12,22 +12,29 @@ class DataManager:
     def __init__(self):
         self.con = lite.connect('data.db')
         cur = self.con.cursor()
+        # Table for storing date, time, blood glucose value, carbs, bolus, and notes
         cur.execute("CREATE TABLE IF NOT EXISTS Data(Id INTEGER PRIMARY KEY, Time TEXT, Date TEXT, Bg INT, Carbs INT, Bolus INT, Notes Text)")
+        # Table for storing points with which to calibrate the meter.
         cur.execute("CREATE TABLE IF NOT EXISTS CalibData(ADC INT, Actual INT)")
 
+    # Adds a new data point to the "Data" table
     def new_entry(self, time, date, bg, carbs, bolus, notes):
         self.con.execute("INSERT INTO data(Time, Date, Bg, Carbs, Bolus, Notes)  VALUES ('"+time+"','"+date+"',"+str(bg)+","+str(carbs)+","+str(bolus)+",'"+notes+"')")
-        #print("INSERT INTO data(Time, Date, Bg, Carbs, Bolus, Notes)  VALUES ('"+time+"','"+date+"',"+str(bg)+","+str(carbs)+","+str(bolus)+",'"+notes+"')")
         self.con.commit()
+
+    # Deletes an entry from the "Data" table  TODO why is this function here?
     def delete_entry(self, rowid):
         self.con.execute("DELETE from Data where Id=" + str(rowid))
         self.con.commit()
 
         print 'deleted ' + str(rowid)
 
+    # Adds a new data point to the "CabibData" table
     def new_calib_entry(self, adc, actual):
         self.con.execute("INSERT INTO CalibData(ADC, Actual) VALUES ("+str(adc)+","+str(actual)+")")
         self.con.commit()
+
+    # Calculates linear regression on the "CalibData" table in the database.  Returns line as a lambda object
     def get_line(self):
         rows = self.get_whole_table("CalibData")
         x = empty([len(rows)])
@@ -39,7 +46,9 @@ class DataManager:
             index += 1
         slope, intercept, r_value, p_value, std_err = linregress(x,y)
         return lambda x: slope*x + intercept
-    def get_whole_table(self, table):   # returns table in dict form
+
+    # Returns the requested table as a dictonary object
+    def get_whole_table(self, table):
         with self.con:
             self.con.row_factory = lite.Row
 
@@ -47,18 +56,32 @@ class DataManager:
             cur.execute("SELECT * FROM " + table)
 
             return cur.fetchall()
+
+    # Deletes the sqlite table passed
     def delete_table(self, table):
         cur = self.con.cursor()
         cur.execute("DROP TABLE IF EXISTS " + table)
-    def str_to_date(self, strdate):
+
+    # Converts strings in the format m/d/y or m/d/y, h:m to a datetime object
+    def str_to_date(self, *args):
+        strdate = args[0]
         split_date = strdate.split('/')
         m = int(split_date[0])
         d = int(split_date[1])
         y = int(split_date[2])
+        h = 0
+        mins = 0
         if y < 100:
             y = int('20' + str(y))
-        return datetime.datetime(year=y, month=m, day=d)
 
+        if len(args) == 2:
+            strtime = args[1]
+            split_time = strtime.split(':')
+            h = int(split_time[0])
+            mins = int(split_time[1])
+        return datetime.datetime(year=y, month=m, day=d, hour=h, minute=mins)
+
+# Testing stuff
 if __name__ == "__main__":
     bgm = DataManager()
     rows = bgm.get_whole_table("Data")
@@ -81,11 +104,12 @@ if __name__ == "__main__":
         ('9:36','10/15/16', 111, 26, 7, ' '),
         ('9:36','10/17/16', 111, 26, 7, ' ')
     )
+    print bgm.str_to_date('1/23/17','12:59')
 
-    bgm.delete_table('Data')
-    bgm = DataManager()
-    for point in data:
-        bgm.new_entry(point[0],point[1],point[2],point[3], point[4], point[5])
+    #bgm.delete_table('Data')
+    #bgm = DataManager()
+    #for point in data:
+    #    bgm.new_entry(point[0],point[1],point[2],point[3], point[4], point[5])
     #for row in rows:
         #print "%s %s %s" % (row["Date"], row["Bg"], row["Carbs"])
         #print point[0]
