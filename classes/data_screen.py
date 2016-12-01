@@ -52,15 +52,19 @@ class DataScreen(Screen):
     def render_data(self):
         layout = self.ids.layout
 
-        rows = self.dm.get_whole_table("data")
+        rows = self.dm.get_whole_table_sorted("data")
 
         lastdate = ""
         rows.reverse()
         for row in rows:
-            if row["Date"] != lastdate:
-                lastdate = row["Date"]
-                layout.add_widget(DateRow(row["Date"]))
-            entry = EntryRow(row["Time"], row['Bg'], row['Carbs'], row['bolus'], row['Notes'])
+            isodate = row["dateColumn"]
+            isodate_split = isodate.split(' ')
+            date = isodate_split[0]
+            time = isodate_split[1]
+            if date != lastdate:
+                lastdate = date
+                layout.add_widget(DateRow(date))
+            entry = EntryRow(time, row['Bg'], row['Carbs'], row['bolus'], row['Notes'])
             layout.add_widget(entry)
             self.entryrows.append(entry)
     def update_row_widths(self):

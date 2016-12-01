@@ -106,7 +106,7 @@ class HomeScreen(Screen):
         bgavg = 0
         dev = 0
         for row in rows:
-            date = self.dm.str_to_date(row["Date"])
+            date = self.dm.str_to_date(row["dateColumn"])
             if date >= lower_bound and date <= upper_bound:
                 carbavg += row["Carbs"]
                 bgavg += row["Bg"]
@@ -122,7 +122,7 @@ class HomeScreen(Screen):
 
         #plot.points =[(int(str(self.dm.str_to_date(row["Date"]).month)+str(self.dm.str_to_date(row["Date"]).day)), row["Bg"]) for row in rows]
         for row in rows:
-            date = self.dm.str_to_date(row["Date"])
+            date = self.dm.str_to_date(row["dateColumn"])
             if date.day >= 10:
                 dateint = int(str(date.month)+str(date.day))
             else:
