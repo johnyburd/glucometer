@@ -27,6 +27,8 @@ from classes.bg_screen import BGScreen
 from classes.settings_screen import SettingsScreen
 #from classes import settings
 
+
+# TODO move to homescreen class
 class NewEntryPopup(Popup):
 
     def __init__(self, **kwargs):
@@ -42,7 +44,8 @@ class NewEntryPopup(Popup):
         bolus = ids.bolus.text
         notes = ids.notes.text
         if time != '' and date != '' and bg != '' and carbs != '' and bolus != '' and notes != '':
-            self.dm.new_entry(time, date, bg, carbs, bolus, notes)
+            datetime = date + ' ' + time
+            self.dm.new_entry(datetime, bg, carbs, bolus, notes)
             self.dismiss()
 
 class ExtrasScreen(Screen):

@@ -68,7 +68,8 @@
                 font_size: 20
                 text: 'X'
 <DataScreen>:
-    on_enter: root.update_row_widths() # refresh widths because they can't be set until after the screen is rendered
+    on_enter:
+        root.update_row_widths() # refresh widths because they can't be set until after the screen is rendered
     name: 'data'
     ScrollView:
         do_scroll_x: False
