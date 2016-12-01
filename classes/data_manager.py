@@ -119,32 +119,34 @@ if __name__ == "__main__":
     rows = bgm.get_whole_table("Data")
 
     data = (
-        ('2016-01-24 23:45', 98, 36, 9, 'bg of 98'),
-        ('2016-02-24 23:45', 94, 24, 6, 'same notes'),
-        ('2016-04-24 23:45', 112, 26, 7, 'notes these are them'),
-        ('2016-05-24 23:45', 86, 13, 3, 'aeu'),
-        ('2016-03-24 23:45', 134, 6, 2, 'none'),
-        ('2016-06-24 23:45', 99, 6, 2, 'it was 99 today'),
-        ('2016-07-24 23:45', 109, 12, 3, 'tomorrow is 140'),
-        ('2016-08-24 12:45', 103, 140, 35, 'wow thats high'),
-        ('2016-09-24 23:45', 109, 60, 15, 'testing'),
-        ('2016-12-24 23:45', 94, 44, 11, '44, 11'),
-        ('2016-10-24 23:45', 117, 6, 2, 'notesnotesnotes'),
-        ('2016-12-24 23:45', 117, 6, 2, 'notesnotesnotes'),
-        ('2016-11-24 12:45', 111, 26, 7, ' '),
-        ('2016-11-24 23:45', 117, 6, 2, 'notesnotesnotes'),
-        ('2016-12-24 23:45', 111, 26, 7, ' '),
-        ('2016-12-24 23:45', 111, 26, 7, ' ')
+
+        ('2016-12-01 11:44', 98, 0, 0, 'bg of 98'),
+        ('2016-11-03 03:45', 98, 36, 9, 'bg of 98'),
+        ('2016-11-03 12:45', 94, 24, 6, 'same notes'),
+        ('2016-11-03 23:45', 112, 26, 7, 'notes these are them'),
+        ('2016-10-04 23:45', 86, 13, 3, 'aeu'),
+        ('2016-09-05 23:45', 134, 6, 2, 'none'),
+        ('2016-10-06 23:45', 99, 6, 2, 'it was 99 today'),
+        ('2016-10-07 23:45', 109, 12, 3, 'tomorrow is 140'),
+        ('2016-11-08 12:45', 103, 140, 35, 'wow thats high'),
+        ('2016-11-09 23:45', 109, 60, 15, 'testing'),
+        ('2016-11-10 23:45', 94, 44, 11, '44, 11'),
+        ('2016-11-11 23:45', 117, 6, 2, 'notesnotesnotes'),
+        ('2016-11-12 23:45', 117, 6, 2, 'notesnotesnotes'),
+        ('2016-11-13 12:45', 111, 26, 7, ' '),
+        ('2016-11-14 23:45', 117, 6, 2, 'notesnotesnotes'),
+        ('2016-11-15 23:45', 111, 26, 7, ' '),
+        ('2016-11-16 23:45', 111, 26, 7, ' ')
     )
     #table = bgm.sort_data_table()
     table = bgm.get_whole_table_sorted("Data")
     for thing in table:
         print thing
 
-    #bgm.delete_table('Data')
-    #bgm = DataManager()
-    #for point in data:
-    #    bgm.new_entry(point[0],point[1],point[2],point[3], point[4])
+    bgm.delete_table('Data')
+    bgm = DataManager()
+    for point in data:
+        bgm.new_entry(point[0],point[1],point[2],point[3], point[4])
     #for row in rows:
        # print "%s %s %s" % (row["Date"], row["Bg"], row["Carbs"])
         #print point[0]
