@@ -10,7 +10,9 @@ from kivy.properties import BooleanProperty
 from kivy.lang import Builder
 
 Builder.load_file('kvfiles/data_screen.kv')
+
 class DateRow(BoxLayout):
+
     def __init__(self, date, **kwargs):
         super(DateRow, self).__init__(**kwargs)
         dm = DataManager()
@@ -20,6 +22,7 @@ class DateRow(BoxLayout):
 class EntryRow(BoxLayout):
 
     widths_correct = BooleanProperty(False)
+
     def __init__(self, time, bg, carbs, bolus, notes, **kwargs):
         super(EntryRow, self).__init__(**kwargs)
 
@@ -29,6 +32,7 @@ class EntryRow(BoxLayout):
         i.carbs.text = str(carbs)
         i.bolus.text = str(bolus)
         i.notes.text = notes
+
     def refresh_widths(self):
         i = self.ids
         i.bg._label.refresh()      # have to refresh to update texture size
@@ -42,11 +46,13 @@ class EntryRow(BoxLayout):
             self.refresh_widths()
 
 class DataScreen(Screen):
+
     def __init__(self, **kwargs):
         super(DataScreen, self).__init__(**kwargs)
 
         self.dm = DataManager()
         self.entryrows = []
+        self.daterows = []
         self.render_data()
 
     def render_data(self):
@@ -61,15 +67,30 @@ class DataScreen(Screen):
             isodate_split = isodate.split(' ')
             date = isodate_split[0]
             time = isodate_split[1]
+
             if date != lastdate:
                 lastdate = date
-                layout.add_widget(DateRow(date))
+                daterow = DateRow(date)
+                layout.add_widget(daterow)
+                self.daterows.append(daterow)
+
             entry = EntryRow(time, row['Bg'], row['Carbs'], row['bolus'], row['Notes'])
             layout.add_widget(entry)
             self.entryrows.append(entry)
+
+    def refresh(self):
+        for entry in self.entryrows:
+            self.ids.layout.remove_widget(entry)
+        for date in self.daterows:
+            self.ids.layout.remove_widget(date)
+
+        self.entryrows = []
+        self.render_data()
+
     def update_row_widths(self):
         for entry in self.entryrows:
             entry.refresh_widths()
+
     def delete_row(self, row):
         self.dm.delete_entry(row)
     '''

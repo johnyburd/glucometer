@@ -25,10 +25,15 @@ from classes.data_screen import DataScreen
 from classes.home_screen import HomeScreen
 from classes.bg_screen import BGScreen
 from classes.settings_screen import SettingsScreen
+from classes.extras_screen import ExtrasScreen
 #from classes import settings
 
+homescreen = HomeScreen(name='home')
+datascreen = DataScreen(name='data')
+bgscreen = BGScreen(name='bgtest')
+settingsscreen = SettingsScreen(name='settings')
+extrasscreen = ExtrasScreen(name='extras')
 
-# TODO move to homescreen class
 class NewEntryPopup(Popup):
 
     def __init__(self, **kwargs):
@@ -43,13 +48,11 @@ class NewEntryPopup(Popup):
         carbs = ids.carbs.text
         bolus = ids.bolus.text
         notes = ids.notes.text
-        if time != '' and date != '' and bg != '' and carbs != '' and bolus != '' and notes != '':
+        if time != '' and date != '' and (bg != '' or carbs != '' or bolus != '' or notes != ''):
             datetime = date + ' ' + time
             self.dm.new_entry(datetime, bg, carbs, bolus, notes)
+            datascreen.refresh()
             self.dismiss()
-
-class ExtrasScreen(Screen):
-    pass
 
 class CustomScreenManager(ScreenManager):
 
@@ -59,11 +62,12 @@ class CustomScreenManager(ScreenManager):
     def __init__(self, **kwargs):
 
         super(CustomScreenManager,self).__init__(**kwargs)
+        
 
-        self.add_widget(HomeScreen(name='home'))
-        self.add_widget(DataScreen(name='data'))
-        self.add_widget(BGScreen(name='bgtest'))
-        self.add_widget(SettingsScreen(name='settings'))
+        self.add_widget(homescreen)
+        self.add_widget(datascreen)
+        self.add_widget(bgscreen)
+        self.add_widget(settingsscreen)
         self.add_widget(ExtrasScreen(name='extras'))
 
 class Glucometer(App):
