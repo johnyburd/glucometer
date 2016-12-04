@@ -48,3 +48,69 @@ BoxLayout:
                 on_text: app.set_screen()
     CustomScreenManager:
         id: sm 
+
+<NewEntryPopup>:
+    size: 200, 250
+    size_hint: None, None
+    title: 'New Entry'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 1.78
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Date'
+                TextInput:
+                    id: date
+                    multiline: False
+                    text: '2016-10-03'
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Time'
+                TextInput:
+                    id: time
+                    multiline: False
+                    text: '11:30'
+
+        BoxLayout:
+            size_hint_y: 1.9
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Bg'
+                TextInput:
+                    id: bg
+                    multiline: False
+                    # A really messy char limit + only numbers
+                    input_filter: (lambda text, from_undo: str(text[:3 - len(self.text)]).translate(None, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/=-:;][!@#$%^&*(){}\\\'\".,'))
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Carbs'
+                TextInput:
+                    id: carbs
+                    multiline: False
+                    # A really messy char limit + only numbers
+                    input_filter: (lambda text, from_undo: str(text[:3 - len(self.text)]).translate(None, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/=-:;][!@#$%^&*(){}\\\'\".,'))
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Bolus'
+                TextInput:
+                    id: bolus
+                    multiline: False
+                    # A really messy char limit + only numbers
+                    input_filter: (lambda text, from_undo: str(text[:2 - len(self.text)]).translate(None, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/=-:;][!@#$%^&*(){}\\\'\".,'))
+        Label:
+            text: 'Notes'
+            size_hint_y: .8
+        TextInput:
+            id: notes
+            multiline: False
+            input_filter: (lambda text, from_undo: text[:100 - len(self.text)])
+        Button:
+            text: "submit"
+            on_release:
+                root.submit()

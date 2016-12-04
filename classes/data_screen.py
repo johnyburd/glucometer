@@ -3,6 +3,7 @@
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from .data_manager import DataManager
@@ -10,6 +11,11 @@ from kivy.properties import BooleanProperty
 from kivy.lang import Builder
 
 Builder.load_file('kvfiles/data_screen.kv')
+
+class DeleteDialoguePopup(Popup):
+
+    def __init__(self, **kwargs):
+        super(DeleteDialoguePopup, self).__init__(**kwargs)
 
 class DateRow(BoxLayout):
 
@@ -45,6 +51,10 @@ class EntryRow(BoxLayout):
             i.spacer.width = 240 - totalwidth + i.deletebtn.width + i.editbtn.width
             self.refresh_widths()
 
+    def open_delete_dialogue_popup(self):
+        popup = DeleteDialoguePopup()
+        popup.open()
+
 class DataScreen(Screen):
 
     def __init__(self, **kwargs):
@@ -74,11 +84,31 @@ class DataScreen(Screen):
                 layout.add_widget(daterow)
                 self.daterows.append(daterow)
 
-            entry = EntryRow(time, row['Bg'], row['Carbs'], row['bolus'], row['Notes'])
+            bg = str(row['Bg'])
+            carbs = str(row['Carbs'])
+            bolus = str(row['bolus'])
+            notes = str(row['Notes'])
+            if bg == 0:
+                bg = '--'
+            if carbs == 0:
+                carbs = '--'
+            if bolus == 0:
+                bolus = '--'
+            #TODO make this more clean
+            '''
+            while len(bg) < 3:
+                bg += '0'
+            while len(carbs) < 3:
+                carbs += '0'
+            while len(bolus) < 2:
+                bolus += '0'
+                '''
+
+            entry = EntryRow(time, bg, carbs, bolus, notes)
             layout.add_widget(entry)
             self.entryrows.append(entry)
 
-    def refresh(self):
+    def refresh(self, dummy):
         for entry in self.entryrows:
             self.ids.layout.remove_widget(entry)
         for date in self.daterows:
@@ -97,3 +127,4 @@ class DataScreen(Screen):
             deletecallback = lambda x:self.delete_row(row["Id"])
             self.ids.layout.add_widget(Button(text="x", on_release=deletecallback, size_hint_x=(0.4)))
         '''
+

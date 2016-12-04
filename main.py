@@ -49,9 +49,17 @@ class NewEntryPopup(Popup):
         bolus = ids.bolus.text
         notes = ids.notes.text
         if time != '' and date != '' and (bg != '' or carbs != '' or bolus != '' or notes != ''):
+            if bg == '':
+                bg = 0
+            if carbs == '':
+                carbs = 0
+            if bolus == '':
+                bolus = 0
+            if notes == '':
+                notes = ' '
             datetime = date + ' ' + time
             self.dm.new_entry(datetime, bg, carbs, bolus, notes)
-            datascreen.refresh()
+            Clock.schedule_once(datascreen.refresh, 2)
             self.dismiss()
 
 class CustomScreenManager(ScreenManager):
