@@ -31,7 +31,7 @@
             xmax: 30
             ymin: 45
             ymax: 150
-                
+
         BoxLayout:
             orientation: 'horizontal'
             BoxLayout:
@@ -66,8 +66,7 @@
                     size_hint_y: 0.3
                     font_size: 10
                     text: 'Avg Carbs/Day'
- 
-    
+
         Button:
             size_hint: 1, 0.5
             text: 'New Entry'
@@ -75,8 +74,10 @@
                 app.open_new_entry_popup()
         Button:
             size_hint_y: 0.3
-            text: 'test keyboard'
-            on_release: root.test_keyboard()
+            text: 'test date picker'
+			on_release:
+				root.open_datetime_picker_popup()
+            #on_release: root.test_keyboard()
 
 <NewEntryPopup>:
     size: 200, 250

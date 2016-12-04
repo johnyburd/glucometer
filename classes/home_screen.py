@@ -26,6 +26,7 @@ Builder.load_file('kvfiles/home_screen.kv')
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
+from classes.datetime_picker_popup import DatetimePickerPopup
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
@@ -135,6 +136,9 @@ class HomeScreen(Screen):
 
        from kivy.base import runTouchApp
        runTouchApp(MyKeyboardListener())
+    def open_datetime_picker_popup(self):
+        popup = DatetimePickerPopup()
+        popup.open()
 
 class MyKeyboardListener(Widget):
     def __init__(self, **kwargs):
