@@ -94,15 +94,6 @@ class DataScreen(Screen):
                 carbs = '--'
             if bolus == 0:
                 bolus = '--'
-            #TODO make this more clean
-            '''
-            while len(bg) < 3:
-                bg += '0'
-            while len(carbs) < 3:
-                carbs += '0'
-            while len(bolus) < 2:
-                bolus += '0'
-                '''
 
             entry = EntryRow(time, bg, carbs, bolus, notes)
             layout.add_widget(entry)
