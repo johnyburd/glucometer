@@ -135,7 +135,8 @@ class HomeScreen(Screen):
     def test_keyboard(self):
 
        from kivy.base import runTouchApp
-       runTouchApp(MyKeyboardListener())
+       #runTouchApp(MyKeyboardListener())
+       mykeyboard = MyKeyboardListener()
     def open_datetime_picker_popup(self):
         popup = DatetimePickerPopup()
         popup.open()
@@ -160,17 +161,19 @@ class MyKeyboardListener(Widget):
         print self.size
 
     def _keyboard_closed(self):
-        print('My keyboard have been closed!')
+        print('My keyboard has been closed!')
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        print('The key', keycode, 'have been pressed')
+        print('The key', keycode, 'has been pressed')
         print(' - text is %r' % text)
         print(' - modifiers are %r' % modifiers)
 
         # Keycode is composed of an integer + a string
         # If we hit escape, release the keyboard
+        print keyboard
+        print type(keyboard)
         if keycode[1] == 'escape':
             keyboard.release()
 

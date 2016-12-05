@@ -72,10 +72,14 @@
             text: 'New Entry'
             on_release:
                 app.open_new_entry_popup()
-        Button:
+        BoxLayout:
+
             size_hint_y: 0.3
-            text: 'test date picker'
-			on_release:
-				root.open_datetime_picker_popup()
-            #on_release: root.test_keyboard()
+            Button:
+                text: 'test date picker'
+                on_release:
+                	root.open_datetime_picker_popup()
+            Button:
+                text: 'keyboard'
+                on_release: root.test_keyboard()
 
