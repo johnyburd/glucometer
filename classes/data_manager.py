@@ -22,12 +22,11 @@ class DataManager:
         self.con.execute("INSERT INTO data(DateColumn, Bg, Carbs, Bolus, Notes)  VALUES ('"+date+"',"+str(bg)+","+str(carbs)+","+str(bolus)+",'"+notes+"')")
         self.con.commit()
 
-    # Deletes an entry from the "Data" table  TODO why is this function here?
-    def delete_entry(self, rowid):
-        self.con.execute("DELETE from Data where Id=" + str(rowid))
-        self.con.commit()
+    # Deletes an entry from the "Data" table
+    def delete_entry(self, date, bg, carbs, bolus, notes ):
+        self.con.execute("DELETE FROM data WHERE Id =(SELECT MIN(Id) FROM data WHERE DateColumn='%s' AND Bg=%d AND Carbs =%d AND Bolus =%d AND Notes='%s')" % (date, bg, carbs, bolus, notes))
 
-        print 'deleted ' + str(rowid)
+        self.con.commit()
 
     # Adds a new data point to the "CabibData" table
     def new_calib_entry(self, adc, actual):

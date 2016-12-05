@@ -14,8 +14,11 @@ Builder.load_file('kvfiles/data_screen.kv')
 
 class DeleteDialoguePopup(Popup):
 
-    def __init__(self, **kwargs):
+    def __init__(self, ent, **kwargs):
         super(DeleteDialoguePopup, self).__init__(**kwargs)
+        self.entry = ent
+    def delete(self):
+        self.entry.delete()
 
 class DateRow(BoxLayout):
 
@@ -29,8 +32,11 @@ class EntryRow(BoxLayout):
 
     widths_correct = BooleanProperty(False)
 
-    def __init__(self, time, bg, carbs, bolus, notes, **kwargs):
+    def __init__(self, date, time, bg, carbs, bolus, notes, **kwargs):
         super(EntryRow, self).__init__(**kwargs)
+
+        self.dm = DataManager() 
+        self.datetime = date + ' ' + time
 
         i = self.ids
         i.time.text = time
@@ -52,8 +58,12 @@ class EntryRow(BoxLayout):
             self.refresh_widths()
 
     def open_delete_dialogue_popup(self):
-        popup = DeleteDialoguePopup()
+        popup = DeleteDialoguePopup(self)
         popup.open()
+
+    def delete(self):
+        i = self.ids
+        self.dm.delete_entry(self.datetime, int(i.bg.text), int(i.carbs.text), int(i.bolus.text), i.notes.text)
 
 class DataScreen(Screen):
 
@@ -64,6 +74,8 @@ class DataScreen(Screen):
         self.entryrows = []
         self.daterows = []
         self.render_data()
+
+        Clock.schedule_once(self.update_row_widths, 2)
 
     def render_data(self):
         layout = self.ids.layout
@@ -84,10 +96,10 @@ class DataScreen(Screen):
                 layout.add_widget(daterow)
                 self.daterows.append(daterow)
 
-            bg = str(row['Bg'])
-            carbs = str(row['Carbs'])
-            bolus = str(row['bolus'])
-            notes = str(row['Notes'])
+            bg = row['Bg']
+            carbs = row['Carbs']
+            bolus = row['bolus']
+            notes = row['Notes']
             if bg == 0:
                 bg = '--'
             if carbs == 0:
@@ -95,11 +107,11 @@ class DataScreen(Screen):
             if bolus == 0:
                 bolus = '--'
 
-            entry = EntryRow(time, bg, carbs, bolus, notes)
+            entry = EntryRow(date, time, bg, carbs, bolus, notes)
             layout.add_widget(entry)
             self.entryrows.append(entry)
 
-    def refresh(self, dummy):
+    def refresh(self, *args):
         for entry in self.entryrows:
             self.ids.layout.remove_widget(entry)
         for date in self.daterows:
@@ -107,15 +119,9 @@ class DataScreen(Screen):
 
         self.entryrows = []
         self.render_data()
+        Clock.schedule_once(self.update_row_widths, 0.5)
 
-    def update_row_widths(self):
+    def update_row_widths(self, *args):
         for entry in self.entryrows:
             entry.refresh_widths()
-
-    def delete_row(self, row):
-        self.dm.delete_entry(row)
-    '''
-            deletecallback = lambda x:self.delete_row(row["Id"])
-            self.ids.layout.add_widget(Button(text="x", on_release=deletecallback, size_hint_x=(0.4)))
-        '''
 

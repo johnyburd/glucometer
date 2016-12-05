@@ -91,8 +91,9 @@ class Glucometer(App):
     def build(self):
         self.root.ids.spnr.text = "Home"
 
-    def print_current_screen(self):
-        return sm.current_screen.name
+    def refresh_data_screen(self):
+        datascreen.refresh()
+
     def flappy(self):
         FlappyBirdApp().run()
 

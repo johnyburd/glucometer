@@ -75,8 +75,8 @@
                 on_release:
                     root.open_delete_dialogue_popup()
 <DataScreen>:
-    on_enter:
-        root.update_row_widths() # refresh widths because they can't be set until after the screen is rendered
+    #on_enter:
+    #    root.update_row_widths() # refresh widths because they can't be set until after the screen is rendered
     name: 'data'
     ScrollView:
         do_scroll_x: False
@@ -95,6 +95,8 @@
         Button:
             text: "Yes"
             on_release:
+                root.delete()
+                app.refresh_data_screen()
                 root.dismiss()
         Button:
             text: "No"
