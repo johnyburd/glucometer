@@ -76,10 +76,22 @@
 
             size_hint_y: 0.3
             Button:
-                text: 'test date picker'
+                text: 'date picker'
                 on_release:
                 	root.open_datetime_picker_popup()
             Button:
                 text: 'keyboard'
                 on_release: root.test_keyboard()
+            Button:
+                text: 'time'
+                on_release:
+                    root.open_time_chooser_popup()
+<TimeChooserPopup>:
+    size: 220, 250
+    size_hint: None, None
+    title: ''
+    title_size: '0'
+    BoxLayout:
+        orientation: "vertical"
 
+        CircularTimePicker

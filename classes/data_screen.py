@@ -32,18 +32,31 @@ class EntryRow(BoxLayout):
 
     widths_correct = BooleanProperty(False)
 
-    def __init__(self, date, time, bg, carbs, bolus, notes, **kwargs):
+    def __init__(self, date, time, b, c, bo, n, **kwargs):
         super(EntryRow, self).__init__(**kwargs)
 
-        self.dm = DataManager() 
+        self.dm = DataManager()
         self.datetime = date + ' ' + time
+        self.bg = b
+        self.carbs = c
+        self.bolus = bo
+        self.notes = n
 
         i = self.ids
         i.time.text = time
-        i.bg.text = str(bg)
-        i.carbs.text = str(carbs)
-        i.bolus.text = str(bolus)
-        i.notes.text = notes
+        if b == 0:
+            i.bg.text = '--'
+        else:
+            i.bg.text = str(b)
+        if c == 0:
+            i.carbs.text = '--'
+        else:
+            i.carbs.text = str(c)
+        if bo == 0:
+            i.bolus.text = '--'
+        else:
+            i.bolus.text = str(bo)
+        i.notes.text = n
 
     def refresh_widths(self):
         i = self.ids
@@ -62,8 +75,7 @@ class EntryRow(BoxLayout):
         popup.open()
 
     def delete(self):
-        i = self.ids
-        self.dm.delete_entry(self.datetime, int(i.bg.text), int(i.carbs.text), int(i.bolus.text), i.notes.text)
+        self.dm.delete_entry(self.datetime, int(self.bg), int(self.carbs), int(self.bolus), self.notes)
 
 class DataScreen(Screen):
 
@@ -100,12 +112,6 @@ class DataScreen(Screen):
             carbs = row['Carbs']
             bolus = row['bolus']
             notes = row['Notes']
-            if bg == 0:
-                bg = '--'
-            if carbs == 0:
-                carbs = '--'
-            if bolus == 0:
-                bolus = '--'
 
             entry = EntryRow(date, time, bg, carbs, bolus, notes)
             layout.add_widget(entry)
