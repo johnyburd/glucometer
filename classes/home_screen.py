@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.dropdown import DropDown
+from kivy.uix.popup import Popup
 
 from kivy.uix.vkeyboard import VKeyboard
 from kivy.resources import resource_find
@@ -26,6 +27,7 @@ Builder.load_file('kvfiles/home_screen.kv')
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
+from kivy.garden.circulardatetimepicker import CircularTimePicker
 from classes.datetime_picker_popup import DatetimePickerPopup
 
 class HomeScreen(Screen):
@@ -140,6 +142,12 @@ class HomeScreen(Screen):
     def open_datetime_picker_popup(self):
         popup = DatetimePickerPopup()
         popup.open()
+    def open_time_chooser_popup(self):
+        popup = TimeChooserPopup()
+        popup.open()
+class TimeChooserPopup(Popup):
+	def __init__(self, **kwargs):
+		super(TimeChooserPopup, self).__init__(**kwargs)
 
 class MyKeyboardListener(Widget):
     def __init__(self, **kwargs):
