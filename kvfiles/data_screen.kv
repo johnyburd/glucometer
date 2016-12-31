@@ -36,17 +36,17 @@
             Label:
                 id: bg
                 #width: self.texture_size[0] + 10
-                width: 30
+                width: '35dp'
                 size_hint_x: None
             Label:
                 id: carbs
-                width: 30
+                width: '30dp'
                 #width: self.texture_size[0] + 10
                 size_hint_x: None
             Label:
                 id: bolus
                 #width: self.texture_size[0] + 10
-                width: 30
+                width: '30dp'
                 size_hint_x: None
             Label:
                 id: notes
@@ -61,7 +61,7 @@
                 size_hint: None, 1
                 width: self.height
                 background_color: (.01,.87,.05,1)
-                font_size: 10
+                font_size: '10sp'
                 text: 'edit'
                 on_release:
                     app.open_new_entry_popup()
@@ -70,7 +70,7 @@
                 size_hint: None, 1
                 width: self.height
                 background_color: (1,0,0,1)
-                font_size: 20
+                font_size: '20sp'
                 text: 'X'
                 on_release:
                     root.open_delete_dialogue_popup()
@@ -86,9 +86,9 @@
             size_hint_y: None
             height: self.minimum_height
             row_force_default: True
-            row_default_height: 30
+            row_default_height: '45sp'
 <DeleteDialoguePopup>:
-    size: 150, 100
+    size: app.width/2, app.height/6
     size_hint: None, None
     title: 'Are you sure?'
     BoxLayout:

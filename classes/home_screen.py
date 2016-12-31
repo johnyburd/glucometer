@@ -71,7 +71,7 @@ class HomeScreen(Screen):
         self.begindropdown.bind(on_select=lambda instance, x: setattr(self.beginbtn, 'text', x))
         self.enddropdown.bind(on_select=lambda instance, x: setattr(self.endbtn, 'text', x))
         self.ids.dateselectid.add_widget(self.beginbtn)
-        self.ids.dateselectid.add_widget(Label(text='-', font_size=15,size_hint_x= 0.2))
+        self.ids.dateselectid.add_widget(Label(text='-', font_size='15sp',size_hint_x= 0.2))
         self.ids.dateselectid.add_widget(self.endbtn)
 
 

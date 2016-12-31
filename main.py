@@ -10,7 +10,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager
-from kivy.properties import StringProperty, ListProperty, ObjectProperty, BooleanProperty
+from kivy.properties import StringProperty, ListProperty, ObjectProperty, BooleanProperty, NumericProperty
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
@@ -85,7 +85,11 @@ class Glucometer(App):
     screen_names = CustomScreenManager.screen_names
     screen_ids = CustomScreenManager.screen_ids
 
+    width, height = Window.size
+
     def __init_(self, **kwargs):
+
+
         super(Glucometer, self).__init__(**kwargs)
 
     def build(self):
@@ -130,6 +134,8 @@ class Glucometer(App):
     def open_new_entry_popup(self):
         popup = NewEntryPopup()
         popup.open()
+    def on_pause(self):
+        return True
 
 class MyKeyboardListener(Widget):
 

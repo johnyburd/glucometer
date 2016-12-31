@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from .data_manager import DataManager
 from kivy.properties import BooleanProperty
@@ -64,10 +65,11 @@ class EntryRow(BoxLayout):
         i.carbs._label.refresh()
         i.bolus._label.refresh()
         i.notes._label.refresh()
-        self.ids.layout.width = sum(x.width for x in self.ids.layout.children)
+        i.layout.width = sum(x.width for x in self.ids.layout.children)
         totalwidth = i.layout.width + i.time.width
-        if totalwidth < (240 + i.deletebtn.width + i.editbtn.width):
-            i.spacer.width = 240 - totalwidth + i.deletebtn.width + i.editbtn.width
+        print totalwidth
+        if totalwidth < (Window.width + i.deletebtn.width + i.editbtn.width):
+            i.spacer.width = Window.width - totalwidth + i.deletebtn.width + i.editbtn.width
             self.refresh_widths()
 
     def open_delete_dialogue_popup(self):
@@ -85,9 +87,10 @@ class DataScreen(Screen):
         self.dm = DataManager()
         self.entryrows = []
         self.daterows = []
-        #self.render_data()
+        self.render_data()
 
-        #Clock.schedule_once(self.update_row_widths, 2)
+        Clock.schedule_once(self.update_row_widths, 8)
+        #self.refresh()
 
     def render_data(self):
         layout = self.ids.layout

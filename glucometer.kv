@@ -4,7 +4,10 @@
 
 <ActionSpinnerOptions@SpinnerOption>
     background_color: .4, .4, .4, 1
+    sync_height: True
 <ActionSpinner@Spinner+ActionItem>
+    sync_height: True
+    #pos_hint: {'center_x': .5, 'center_y': .5}
     canvas.before:
         Color:
             rgba: 0.128, 0.128, 0.128, 1
@@ -24,8 +27,10 @@ BoxLayout:
             size: self.size
             source: 'res/background.png'
 
+
     ActionBar:
-        height: 40
+        id: bar
+        size_hint: 1, 0.09
         ActionView:
             use_separator: True
             ActionPrevious:
@@ -42,7 +47,9 @@ BoxLayout:
                 app_icon_width: 0.1
             ActionSpinner:
                 id: spnr
-                size_hint: 0.6, 1
+                #size_hint: None, 1
+                width: '200sp'
+                height: bar.height
                 important: False
                 values: app.screen_names
                 on_text: app.set_screen()
@@ -50,7 +57,7 @@ BoxLayout:
         id: sm 
 
 <NewEntryPopup>:
-    size: 200, 250
+    size: app.width/1.5, app.height/2
     size_hint: None, None
     title: 'New Entry'
     BoxLayout:

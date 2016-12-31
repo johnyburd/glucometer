@@ -1,16 +1,17 @@
 
 <DatetimePickerPopup>:
-    size: 220, 285
+    size: app.width/1.5, app.height/2
     size_hint: None, None
     title: ''
     title_size: '0sp'
     BoxLayout:
         orientation: 'vertical'
         GridLayout:
+            id: grid
             orientation: 'vertical'
             cols: 7
             row_force_default: True
-            row_default_height: 31
+            row_default_height: self.height/grid.cols
             Label:
                 text: 'S'
             Label:
