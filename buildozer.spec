@@ -36,7 +36,8 @@ version = 0.1
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy,sqlite3,numpy
+requirements = kivy,sqlite3,numpy,pyusb
+#,matplotlib
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -44,6 +45,7 @@ requirements = kivy,sqlite3,numpy
 
 # (list) Garden requirements
 garden_requirements = roulette,datetimepicker,circularlayout,graph,tickline,roulettescroll,circulardatetimepicker
+#,matplotlib
 
 
 
@@ -74,7 +76,7 @@ orientation = portrait
 fullscreen = 1
 
 # (list) Permissions
-#android.permissions = INTERNET
+android.permissions = MANAGE_USB, INTERNET
 
 # (int) Android API to use
 #android.api = 19
@@ -142,7 +144,7 @@ fullscreen = 1
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
 
 # (str) XML file to include as an intent filters in <activity> tag
-#android.manifest.intent_filters =
+#android.manifest.intent_filters = USB_DEVICE_ATTACHED, USB_DEVICE_DETACHED
 
 # (list) Android additionnal libraries to copy into libs/armeabi
 #android.add_libs_armeabi = libs/android/*.so

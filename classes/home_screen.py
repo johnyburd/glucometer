@@ -9,7 +9,7 @@ from kivy.uix.popup import Popup
 
 from kivy.uix.vkeyboard import VKeyboard
 from kivy.resources import resource_find
-from kivy.graphics import Color, BorderImage, Canvas
+from kivy.graphics import Color, BorderImage, Canvas, Line, Rectangle
 from kivy.core.image import Image
 
 from .data_manager import DataManager
@@ -29,6 +29,12 @@ from kivy.uix.widget import Widget
 
 from kivy.garden.circulardatetimepicker import CircularTimePicker
 from classes.datetime_picker_popup import DatetimePickerPopup
+#from kivy.garden.matplotlib.backend_kivyagg import FigureCanvas
+#from matplotlib.transforms import Bbox
+#import matplotlib
+#matplotlib.use('module://kivy.garden.matplotlib.backend_kivy')
+#from matplotlib.figure import Figure
+import numpy as np
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
@@ -36,7 +42,7 @@ class HomeScreen(Screen):
         super(HomeScreen, self).__init__(**kwargs)
 
         self.dm = DataManager()
-
+        '''
         negday = datetime.timedelta(days=-1)
         today = datetime.date.today()
 
@@ -76,6 +82,7 @@ class HomeScreen(Screen):
 
 
         self.update_graph(Button(text='fakeinstance'))
+        '''
 
     def update_graph(self,instance):
         ids = self.ids

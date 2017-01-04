@@ -2,7 +2,8 @@
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
-            size_hint_y: .03
+            size_hint_y: None
+            height: '1sp'
             canvas:
                 Color:
                     rgba: (34.0/256, 201.0/256, 198.0/256, .6)
@@ -40,6 +41,7 @@
         effect_cls: "ScrollEffect"
         do_scroll_y: False
         bar_width: 0
+        scroll_timeout: 5
         BoxLayout:
             id: layout
             size_hint_x: None
@@ -91,6 +93,7 @@
     name: 'data'
     ScrollView:
         do_scroll_x: False
+        scroll_timeout: 15
         GridLayout:
             id: layout
             cols: 1 # 5
