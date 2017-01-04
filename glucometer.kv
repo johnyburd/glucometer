@@ -5,12 +5,13 @@
 <ActionSpinnerOptions@SpinnerOption>
     background_color: .4, .4, .4, 1
     sync_height: True
+    height: '80sp'
 <ActionSpinner@Spinner+ActionItem>
     sync_height: True
     #pos_hint: {'center_x': .5, 'center_y': .5}
     canvas.before:
         Color:
-            rgba: 0.128, 0.128, 0.128, 1
+            rgba: 0.120, 0.120, 0.120, 1
         Rectangle:
             size: self.size
             pos: self.pos
@@ -47,17 +48,28 @@ BoxLayout:
                 app_icon_width: 0.1
             ActionSpinner:
                 id: spnr
-                #size_hint: None, 1
-                width: '200sp'
+                size_hint: 0.75, None
+                #width: '200sp'
                 height: bar.height
                 important: False
                 values: app.screen_names
                 on_text: app.set_screen()
+    BoxLayout:
+        size_hint_y: None
+        height: '2sp'
+        canvas:
+            Color:
+                rgba: (34.0/256, 201.0/256, 198.0/256, .6)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
     CustomScreenManager:
         id: sm 
 
 <NewEntryPopup>:
-    size: app.width/1.5, app.height/2
+    size: app.width/1.5, app.height/1.5
+    pos_hint:{'y':(.25)}
     size_hint: None, None
     title: 'New Entry'
     BoxLayout:
@@ -70,16 +82,18 @@ BoxLayout:
                     text: 'Date'
                 TextInput:
                     id: date
+                    font_size: '15sp'
                     multiline: False
-                    text: '2016-10-03'
+                    text: root.get_date()
             BoxLayout:
                 orientation: 'vertical'
                 Label:
                     text: 'Time'
                 TextInput:
                     id: time
+                    font_size: '15sp'
                     multiline: False
-                    text: '11:30'
+                    text: root.get_time()
 
         BoxLayout:
             size_hint_y: 1.9
@@ -90,6 +104,7 @@ BoxLayout:
                 TextInput:
                     id: bg
                     multiline: False
+                    font_size: '15sp'
                     # A really messy char limit + only numbers
                     input_filter: (lambda text, from_undo: str(text[:3 - len(self.text)]).translate(None, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/=-:;][!@#$%^&*(){}\\\'\".,'))
             BoxLayout:
@@ -99,6 +114,7 @@ BoxLayout:
                 TextInput:
                     id: carbs
                     multiline: False
+                    font_size: '15sp'
                     # A really messy char limit + only numbers
                     input_filter: (lambda text, from_undo: str(text[:3 - len(self.text)]).translate(None, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/=-:;][!@#$%^&*(){}\\\'\".,'))
             BoxLayout:
@@ -107,6 +123,7 @@ BoxLayout:
                     text: 'Bolus'
                 TextInput:
                     id: bolus
+                    font_size: '15sp'
                     multiline: False
                     # A really messy char limit + only numbers
                     input_filter: (lambda text, from_undo: str(text[:2 - len(self.text)]).translate(None, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/=-:;][!@#$%^&*(){}\\\'\".,'))
@@ -116,6 +133,7 @@ BoxLayout:
         TextInput:
             id: notes
             multiline: False
+            font_size: '15sp'
             input_filter: (lambda text, from_undo: text[:100 - len(self.text)])
         Button:
             text: "submit"

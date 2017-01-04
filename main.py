@@ -14,6 +14,8 @@ from kivy.properties import StringProperty, ListProperty, ObjectProperty, Boolea
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
+#import pyjnius
+
 from time import localtime, strftime
 import datetime
 from subprocess import call
@@ -37,8 +39,16 @@ extrasscreen = ExtrasScreen(name='extras')
 class NewEntryPopup(Popup):
 
     def __init__(self, **kwargs):
-        super(NewEntryPopup, self).__init__(**kwargs)
+        self.date = datetime.datetime.now()
         self.dm = DataManager()
+        super(NewEntryPopup, self).__init__(**kwargs)
+
+    
+    def get_date(self):
+        return self.date.strftime('%Y-%m-%d')
+
+    def get_time(self):
+        return self.date.strftime('%H:%M')
 
     def submit(self):
         ids = self.ids
