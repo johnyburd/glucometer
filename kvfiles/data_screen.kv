@@ -1,16 +1,27 @@
 <DateRow>:
-    canvas:
-        Color:
-            rgba: (.2, .2, .2, 0.6)
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    Label:
-        id: date
-        text_size: self.size
-        halign: 'left'
-        valign: 'middle'
-        padding: 8,0
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: .03
+            canvas:
+                Color:
+                    rgba: (34.0/256, 201.0/256, 198.0/256, .6)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: (.2, .2, .2, 0.6)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            Label:
+                id: date
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+                padding: 8,0
 <EntryRow>:
     #on_parent: root.refresh_widths(12)
     BoxLayout:
